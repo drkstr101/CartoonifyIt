@@ -23,7 +23,7 @@ ENV PATH="${PATH}:/android-sdk-linux/platform-tools:${ANDROID_HOME}/tools/bin:${
 
 # install OS packages
 RUN apt-get --quiet update --yes
-RUN apt-get --quiet install --yes wget apt-utils tar unzip lib32stdc++6 lib32z1 build-essential ruby ruby-dev
+RUN apt-get --quiet install --yes wget apt-utils tar unzip lib32stdc++6 lib32z1 build-essential
 # We use this for xxd hex->binary
 RUN apt-get --quiet install --yes vim-common
 
@@ -63,9 +63,3 @@ RUN yes | sdkmanager 'extras;google;m2repository' > /dev/null
 RUN yes | sdkmanager 'cmake;'$ANDROID_CMAKE_REV > /dev/null
 RUN yes | sdkmanager 'lldb;'$ANDROID_LLDB_REV > /dev/null
 RUN yes | sdkmanager 'ndk-bundle' > /dev/null
-
-# Install FastLane
-COPY Gemfile.lock .
-COPY Gemfile .
-RUN gem install bundle
-RUN bundle install
