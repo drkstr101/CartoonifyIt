@@ -1,0 +1,34 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:${ANDROID_PLUGIN_VER}",
+                "gradle.plugin.org.mozilla.rust-android-gradle:plugin:${RUST_PLUGIN_VER}",
+                "org.jetbrains.kotlin:kotlin-gradle-plugin:${KOTLIN_PLUGIN_VER}"
+        
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        
+    }
+}
+
+task cleanRust(type: Delete) {
+    delete file('android-ndk-camera-rs/target')
+    delete file('native_app/target')
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

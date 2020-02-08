@@ -1,0 +1,12 @@
+/.externalToolBuilders/
+/.gradle/
+/.idea/
+/.ndk/
+/.vscode/
+/build/
+/bin/
+/local.properties
+
+.settings/
+.project
+.iml

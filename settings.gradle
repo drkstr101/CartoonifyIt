@@ -1,0 +1,3 @@
+include 'android-ndk-camera-rs'
+include 'app'
+include 'native_app'

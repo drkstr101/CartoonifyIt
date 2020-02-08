@@ -1,0 +1,59 @@
+
+apply plugin: 'com.android.application'
+apply plugin: 'org.mozilla.rust-android-gradle.rust-android'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+    defaultConfig {
+        applicationId "io.waweb.cartoonifyit"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName project.version
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+cargo {
+    module = "../native_app"
+    targets = ["arm", "x86", "arm64"]
+    libname = "native_app"
+    prebuiltToolchains = true
+}
+
+repositories {
+    jcenter()
+    google()
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation "androidx.test:core:${TEST_CORE_VER}"
+    androidTestImplementation "androidx.test.ext:junit:${TEST_EXT_JUNIT_VER}"
+    androidTestImplementation "androidx.test:runner:${TEST_CORE_VER}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${ESPRESSO_VER}"
+}
+
+afterEvaluate {
+    // The `cargoBuild` task isn't available until after evaluation.
+    android.applicationVariants.all { variant ->
+        def productFlavor = ""
+        variant.productFlavors.each {
+            productFlavor += "${it.name.capitalize()}"
+        }
+        def buildType = "${variant.buildType.name.capitalize()}"
+        tasks["generate${productFlavor}${buildType}Assets"].dependsOn(tasks["cargoBuild"])
+    }
+}
+
+preBuild.dependsOn "cargoBuild"
