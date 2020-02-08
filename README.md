@@ -7,9 +7,7 @@ under the MIT license, free to use and without adds.
 
 See the [Project Inception Document](docs/project-inception.md) for more details on the project mission and timelines.
 
-This project is a work in progress. The master branch is set to the `0.1.1` release which my serve as starting point for building your own android native activities in rust. 
-
-This is a "Hello, World!" implementation that when launched will present you with a blank window and the application title.
+This project is a work in progress. The master branch is set to the `0.1.1` release which my serve as starting point for building your own android native activities in rust. When launched, you should be present you with a blank window and the application title.
 
 
 # Getting started
