@@ -1,3 +1,4 @@
-include 'android-ndk-camera-rs'
+rootProject.name = "CartoonifyIt"
+
 include 'app'
 include 'native_app'
