@@ -9,7 +9,7 @@ ENV ANDROID_BUILD_TOOLS "28.0.3"
 # Version from https://developer.android.com/studio/releases/sdk-tools
 ENV ANDROID_SDK_TOOLS "26.1.1"
 
-ENV ANDROID_NDK_REV "21.0.6113669"
+ENV ANDROID_NDK_REV "20.1.5948944"
 
 ENV ANDROID_SDK_TOOLS_REV "4333796"
 
@@ -18,7 +18,7 @@ ENV ANDROID_CMAKE_REV "3.10.2.4988404"
 ENV ANDROID_LLDB_REV "3.1"
 
 ENV ANDROID_HOME /android-sdk-linux
-ENV NDK_HOME "$ANDROID_HOME/ndk-bundle"
+ENV NDK_HOME "$ANDROID_HOME/ndk/${ANDROID_NDK_REV}"
 ENV PATH="${PATH}:/android-sdk-linux/platform-tools:${ANDROID_HOME}/tools/bin:${NDK_HOME}"
 
 # install OS packages
@@ -60,6 +60,6 @@ RUN yes | sdkmanager 'platforms;android-28' > /dev/null
 RUN yes | sdkmanager 'extras;android;m2repository' > /dev/null
 RUN yes | sdkmanager 'extras;google;google_play_services' > /dev/null
 RUN yes | sdkmanager 'extras;google;m2repository' > /dev/null
+RUN yes | sdkmanager "ndk;${ANDROID_NDK_REV}" > /dev/null
 RUN yes | sdkmanager 'cmake;'$ANDROID_CMAKE_REV > /dev/null
 RUN yes | sdkmanager 'lldb;'$ANDROID_LLDB_REV > /dev/null
-RUN yes | sdkmanager 'ndk-bundle' > /dev/null
