@@ -16,7 +16,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7b3b3747db640f4777e971b8b8ef1562798c79e670c67ee6a242eda03ce492ef"
 dependencies = [
  "android-ndk-sys",
- "jni 0.13.1",
+ "jni",
  "num_enum",
 ]
 
@@ -34,12 +34,6 @@ checksum = "ee49baf6cb617b853aa8d93bf420db2383fab46d314482ca2803b40d5fde979b"
 dependencies = [
  "winapi",
 ]
-
-[[package]]
-name = "ascii"
-version = "0.7.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3ae7d751998c189c1d4468cf0a39bb2eae052a9c58d50ebb3b9591ee3813ad50"
 
 [[package]]
 name = "ascii"
@@ -93,7 +87,7 @@ dependencies = [
  "clap",
  "env_logger",
  "lazy_static",
- "log 0.4.8",
+ "log",
  "peeking_take_while",
  "proc-macro2 1.0.8",
  "quote 1.0.2",
@@ -170,21 +164,11 @@ dependencies = [
 
 [[package]]
 name = "combine"
-version = "2.5.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1645a65a99c7c8d345761f4b75a6ffe5be3b3b27a93ee731fccc5050ba6be97c"
-dependencies = [
- "ascii 0.7.1",
- "byteorder",
-]
-
-[[package]]
-name = "combine"
 version = "3.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "da3da6baa321ec19e1cc41d31bf599f00c783d0517095cdaf0332e3fe8d20680"
 dependencies = [
- "ascii 0.9.3",
+ "ascii",
  "byteorder",
  "either",
  "memchr",
@@ -205,18 +189,9 @@ checksum = "aafcde04e90a5226a6443b7aabdb016ba2f8307c847d524724bd9b346dd1a2d3"
 dependencies = [
  "atty",
  "humantime",
- "log 0.4.8",
+ "log",
  "regex",
  "termcolor",
-]
-
-[[package]]
-name = "error-chain"
-version = "0.10.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d9435d864e017c3c6afeac1654189b06cdb491cf2ff73dbf0d73b0f292f42ff8"
-dependencies = [
- "backtrace",
 ]
 
 [[package]]
@@ -255,36 +230,17 @@ dependencies = [
 
 [[package]]
 name = "jni"
-version = "0.5.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cffc930ce6a38a4013e30567b559bdc79f601013ba4a81e65dbda9207263efd4"
-dependencies = [
- "cesu8",
- "combine 2.5.2",
- "error-chain 0.10.0",
- "jni-sys 0.2.5",
- "log 0.3.9",
-]
-
-[[package]]
-name = "jni"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7e00f1fd30a82a801f8bf38bcb0895088a0013cde111acb713c0824edc372aa4"
 dependencies = [
  "cesu8",
- "combine 3.8.1",
- "error-chain 0.12.1",
- "jni-sys 0.3.0",
- "log 0.4.8",
+ "combine",
+ "error-chain",
+ "jni-sys",
+ "log",
  "walkdir",
 ]
-
-[[package]]
-name = "jni-sys"
-version = "0.2.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "de0aaaba8809ab8d83a53fe2b313b996b79e8632b855eae9f70ad4323dca91b8"
 
 [[package]]
 name = "jni-sys"
@@ -316,15 +272,6 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.3.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e19e8d5c34a3e0e2223db8e060f9e8264aeeb5c5fc64a4ee9965c062211c024b"
-dependencies = [
- "log 0.4.8",
-]
-
-[[package]]
-name = "log"
 version = "0.4.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "14b6052be84e6b71ab17edffc2eeabf5c2c3ae1fdb464aae35ac50c67a44e1f7"
@@ -345,7 +292,7 @@ dependencies = [
  "android-ndk",
  "android-ndk-sys",
  "cc",
- "jni 0.5.3",
+ "jni",
  "ndk_camera",
  "ndk_camera_sys",
 ]

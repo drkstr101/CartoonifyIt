@@ -16,7 +16,7 @@ include = [
 cc = "1.0"
 
 [dependencies]
-jni = "0.5.2"
+jni = "0.13.1"
 android-ndk = "0.0.6"
 android-ndk-sys = "0.2.0"
 
