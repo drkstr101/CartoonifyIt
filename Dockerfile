@@ -39,6 +39,7 @@ RUN rustup --version; \
 
 # Install Rust Build Targets
 RUN rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android
+RUN cargo install bindgen
 
 # install Android SDK
 RUN mkdir -p ${ANDROID_HOME} \
