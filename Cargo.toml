@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "native_app",
+    "ndk_camera_sys",
+    "ndk_camera"
+]

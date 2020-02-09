@@ -20,5 +20,14 @@ jni = "0.5.2"
 android-ndk = "0.0.6"
 android-ndk-sys = "0.2.0"
 
+[dependencies.ndk_camera]
+package = "ndk_camera"
+path = "../ndk_camera"
+
+[dependencies.ndk_camera_sys]
+package = "ndk_camera_sys"
+path = "../ndk_camera_sys"
+
+
 [lib]
 crate_type = ["staticlib", "dylib"]
