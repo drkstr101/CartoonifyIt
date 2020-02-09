@@ -7,7 +7,9 @@ under the MIT license, free to use and without adds.
 
 See the [Project Inception Document](docs/project-inception.md) for more details on the project mission and timelines.
 
-This project is a work in progress. The master branch is set to the `0.1.1` release which my serve as starting point for building your own android native activities in rust. When launched, you should be present you with a blank window and the application title.
+This project is a work in progress. The master branch is set to the [0.1.1](https://github.com/drkstr101/CartoonifyIt/releases/tag/v0.1.1) release which my serve as starting point for building your own android native activities in rust. When launched, you should be present you with a blank window and the application title.
+
+Active development is currently
 
 
 # Getting started
@@ -19,7 +21,7 @@ supported here. If you're using your own IDE, it should be fairly straightforwar
 to convert these instructions to use with your preferred toolchain.
 
 The build environment will need to be configured for rust android development.
-A getting started started guide may be found in the [rust-android-gradle](https://github.com/mozilla/rust-android-gradle/blob/master/README.md) project.
+A getting started started guide may be found in the [rust-android-gradle](https://github.com/mozilla/rust-android-gradle/blob/master/README.md) project. This project has ffi bindings that rartget NDK `r20`, so make sure you have this version installed.
 
 Once the build environment has the necessary tools installed, simply run the project in Android Studio, or build all targets with the `./gradlew build` command.
 
@@ -27,13 +29,20 @@ Once the build environment has the necessary tools installed, simply run the pro
 
 ### Android Application (`app`)
 
-The state of this project is as if you followed the first few steps in the linked
-[Android tutorial](https://developer.android.com/training/basics/firstapp/) and
-have created your project. The application source is based off the [Android NDKCamera](https://github.com/android/ndk-samples/tree/master/camera/basic) sample application, with the native component implemented in Rust.
+The application source is based off the [Android NDKCamera](https://github.com/android/ndk-samples/tree/master/camera/basic) sample application, with the native component implemented in Rust.
 
-### Rust Native Activity (`native_app`)
+### Native Rust Activity (`native_app`)
 
 The rust native activity implements the main UI thread, and provides an injected `android_native_app_glue` based on the [android-rs-glue](https://github.com/rust-windowing/android-rs-glue) crate. The glue code has been forked so that it may be injected without depending on the cargo build task to package your apk. Instead we use the `rust-android-gradle` plugin provided by Mozilla to build and package the apk.
+
+### Safe Rust Bindings for NDKCamera (`ndk_camera`)
+
+This library provides a safe wrapper around the [Android NDK Camera API](https://developer.android.com/ndk/reference/group/camera)
+
+### FFI Bindings for NDKCamera (`ndk_camera_sys`)
+
+This library generates the FFI bindings for the native symbols provided by `android.so`. These bindings are based on `android-ndk-rs`.
+Running the `generate_bindings.sh` script requires `bindgen` installed in your build environment.
 
 ### Dockerfile Environment (`Dockerfile`)
 
