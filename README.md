@@ -9,7 +9,7 @@ See the [Project Inception Document](docs/project-inception.md) for more details
 
 This project is a work in progress. The master branch is set to the [0.1.1](https://github.com/drkstr101/CartoonifyIt/releases/tag/v0.1.1) release which my serve as starting point for building your own android native activities in rust. When launched, you should be present you with a blank window and the application title.
 
-Active development is currently
+Active development is currently being done in the [02-appengine](https://github.com/drkstr101/CartoonifyIt/tree/02-appengine) branch.
 
 
 # Getting started
