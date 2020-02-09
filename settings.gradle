@@ -2,3 +2,5 @@ rootProject.name = "CartoonifyIt"
 
 include 'app'
 include 'native_app'
+include 'ndk_camera'
+include 'ndk_camera_sys'
