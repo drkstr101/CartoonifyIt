@@ -20,12 +20,6 @@ pub const __ANDROID_API_O__: u32 = 26;
 pub const __ANDROID_API_O_MR1__: u32 = 27;
 pub const __ANDROID_API_P__: u32 = 28;
 pub const __ANDROID_API_Q__: u32 = 29;
-pub const __ANDROID_API_R__: u32 = 30;
-pub const __NDK_MAJOR__: u32 = 21;
-pub const __NDK_MINOR__: u32 = 0;
-pub const __NDK_BETA__: u32 = 0;
-pub const __NDK_BUILD__: u32 = 6113669;
-pub const __NDK_CANARY__: u32 = 0;
 pub const true_: u32 = 1;
 pub const false_: u32 = 0;
 pub const __bool_true_false_are_defined: u32 = 1;
@@ -545,7 +539,6 @@ pub const CLONE_VM: u32 = 256;
 pub const CLONE_FS: u32 = 512;
 pub const CLONE_FILES: u32 = 1024;
 pub const CLONE_SIGHAND: u32 = 2048;
-pub const CLONE_PIDFD: u32 = 4096;
 pub const CLONE_PTRACE: u32 = 8192;
 pub const CLONE_VFORK: u32 = 16384;
 pub const CLONE_PARENT: u32 = 32768;
@@ -575,13 +568,7 @@ pub const SCHED_RESET_ON_FORK: u32 = 1073741824;
 pub const SCHED_FLAG_RESET_ON_FORK: u32 = 1;
 pub const SCHED_FLAG_RECLAIM: u32 = 2;
 pub const SCHED_FLAG_DL_OVERRUN: u32 = 4;
-pub const SCHED_FLAG_KEEP_POLICY: u32 = 8;
-pub const SCHED_FLAG_KEEP_PARAMS: u32 = 16;
-pub const SCHED_FLAG_UTIL_CLAMP_MIN: u32 = 32;
-pub const SCHED_FLAG_UTIL_CLAMP_MAX: u32 = 64;
-pub const SCHED_FLAG_KEEP_ALL: u32 = 24;
-pub const SCHED_FLAG_UTIL_CLAMP: u32 = 96;
-pub const SCHED_FLAG_ALL: u32 = 127;
+pub const SCHED_FLAG_ALL: u32 = 7;
 pub const SCHED_OTHER: u32 = 0;
 pub const PTHREAD_ONCE_INIT: u32 = 0;
 pub const PTHREAD_BARRIER_SERIAL_THREAD: i32 = -1;
@@ -6016,162 +6003,6 @@ fn bindgen_test_layout_sigcontext() {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct __kernel_timespec {
-    pub tv_sec: __kernel_time64_t,
-    pub tv_nsec: ::std::os::raw::c_longlong,
-}
-#[test]
-fn bindgen_test_layout___kernel_timespec() {
-    assert_eq!(
-        ::std::mem::size_of::<__kernel_timespec>(),
-        16usize,
-        concat!("Size of: ", stringify!(__kernel_timespec))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<__kernel_timespec>(),
-        4usize,
-        concat!("Alignment of ", stringify!(__kernel_timespec))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<__kernel_timespec>())).tv_sec as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(__kernel_timespec),
-            "::",
-            stringify!(tv_sec)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<__kernel_timespec>())).tv_nsec as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(__kernel_timespec),
-            "::",
-            stringify!(tv_nsec)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct __kernel_itimerspec {
-    pub it_interval: __kernel_timespec,
-    pub it_value: __kernel_timespec,
-}
-#[test]
-fn bindgen_test_layout___kernel_itimerspec() {
-    assert_eq!(
-        ::std::mem::size_of::<__kernel_itimerspec>(),
-        32usize,
-        concat!("Size of: ", stringify!(__kernel_itimerspec))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<__kernel_itimerspec>(),
-        4usize,
-        concat!("Alignment of ", stringify!(__kernel_itimerspec))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<__kernel_itimerspec>())).it_interval as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(__kernel_itimerspec),
-            "::",
-            stringify!(it_interval)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<__kernel_itimerspec>())).it_value as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(__kernel_itimerspec),
-            "::",
-            stringify!(it_value)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct __kernel_old_timeval {
-    pub tv_sec: __kernel_long_t,
-    pub tv_usec: __kernel_long_t,
-}
-#[test]
-fn bindgen_test_layout___kernel_old_timeval() {
-    assert_eq!(
-        ::std::mem::size_of::<__kernel_old_timeval>(),
-        8usize,
-        concat!("Size of: ", stringify!(__kernel_old_timeval))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<__kernel_old_timeval>(),
-        4usize,
-        concat!("Alignment of ", stringify!(__kernel_old_timeval))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<__kernel_old_timeval>())).tv_sec as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(__kernel_old_timeval),
-            "::",
-            stringify!(tv_sec)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<__kernel_old_timeval>())).tv_usec as *const _ as usize },
-        4usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(__kernel_old_timeval),
-            "::",
-            stringify!(tv_usec)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct __kernel_sock_timeval {
-    pub tv_sec: __s64,
-    pub tv_usec: __s64,
-}
-#[test]
-fn bindgen_test_layout___kernel_sock_timeval() {
-    assert_eq!(
-        ::std::mem::size_of::<__kernel_sock_timeval>(),
-        16usize,
-        concat!("Size of: ", stringify!(__kernel_sock_timeval))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<__kernel_sock_timeval>(),
-        4usize,
-        concat!("Alignment of ", stringify!(__kernel_sock_timeval))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<__kernel_sock_timeval>())).tv_sec as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(__kernel_sock_timeval),
-            "::",
-            stringify!(tv_sec)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<__kernel_sock_timeval>())).tv_usec as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(__kernel_sock_timeval),
-            "::",
-            stringify!(tv_usec)
-        )
-    );
-}
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
 pub struct timespec {
     pub tv_sec: __kernel_time_t,
     pub tv_nsec: ::std::os::raw::c_long,
@@ -6362,6 +6193,123 @@ fn bindgen_test_layout_itimerval() {
             stringify!(itimerval),
             "::",
             stringify!(it_value)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct __kernel_timespec {
+    pub tv_sec: __kernel_time64_t,
+    pub tv_nsec: ::std::os::raw::c_longlong,
+}
+#[test]
+fn bindgen_test_layout___kernel_timespec() {
+    assert_eq!(
+        ::std::mem::size_of::<__kernel_timespec>(),
+        16usize,
+        concat!("Size of: ", stringify!(__kernel_timespec))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<__kernel_timespec>(),
+        4usize,
+        concat!("Alignment of ", stringify!(__kernel_timespec))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<__kernel_timespec>())).tv_sec as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__kernel_timespec),
+            "::",
+            stringify!(tv_sec)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<__kernel_timespec>())).tv_nsec as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__kernel_timespec),
+            "::",
+            stringify!(tv_nsec)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct __kernel_itimerspec {
+    pub it_interval: __kernel_timespec,
+    pub it_value: __kernel_timespec,
+}
+#[test]
+fn bindgen_test_layout___kernel_itimerspec() {
+    assert_eq!(
+        ::std::mem::size_of::<__kernel_itimerspec>(),
+        32usize,
+        concat!("Size of: ", stringify!(__kernel_itimerspec))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<__kernel_itimerspec>(),
+        4usize,
+        concat!("Alignment of ", stringify!(__kernel_itimerspec))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<__kernel_itimerspec>())).it_interval as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__kernel_itimerspec),
+            "::",
+            stringify!(it_interval)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<__kernel_itimerspec>())).it_value as *const _ as usize },
+        16usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__kernel_itimerspec),
+            "::",
+            stringify!(it_value)
+        )
+    );
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct __kernel_old_timeval {
+    pub tv_sec: __kernel_long_t,
+    pub tv_usec: __kernel_long_t,
+}
+#[test]
+fn bindgen_test_layout___kernel_old_timeval() {
+    assert_eq!(
+        ::std::mem::size_of::<__kernel_old_timeval>(),
+        8usize,
+        concat!("Size of: ", stringify!(__kernel_old_timeval))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<__kernel_old_timeval>(),
+        4usize,
+        concat!("Alignment of ", stringify!(__kernel_old_timeval))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<__kernel_old_timeval>())).tv_sec as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__kernel_old_timeval),
+            "::",
+            stringify!(tv_sec)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<__kernel_old_timeval>())).tv_usec as *const _ as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(__kernel_old_timeval),
+            "::",
+            stringify!(tv_usec)
         )
     );
 }
@@ -9409,112 +9357,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 #[repr(C)]
-#[repr(align(8))]
-#[derive(Debug, Copy, Clone)]
-pub struct clone_args {
-    pub flags: __u64,
-    pub pidfd: __u64,
-    pub child_tid: __u64,
-    pub parent_tid: __u64,
-    pub exit_signal: __u64,
-    pub stack: __u64,
-    pub stack_size: __u64,
-    pub tls: __u64,
-}
-#[test]
-fn bindgen_test_layout_clone_args() {
-    assert_eq!(
-        ::std::mem::size_of::<clone_args>(),
-        64usize,
-        concat!("Size of: ", stringify!(clone_args))
-    );
-    assert_eq!(
-        ::std::mem::align_of::<clone_args>(),
-        8usize,
-        concat!("Alignment of ", stringify!(clone_args))
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<clone_args>())).flags as *const _ as usize },
-        0usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(clone_args),
-            "::",
-            stringify!(flags)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<clone_args>())).pidfd as *const _ as usize },
-        8usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(clone_args),
-            "::",
-            stringify!(pidfd)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<clone_args>())).child_tid as *const _ as usize },
-        16usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(clone_args),
-            "::",
-            stringify!(child_tid)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<clone_args>())).parent_tid as *const _ as usize },
-        24usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(clone_args),
-            "::",
-            stringify!(parent_tid)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<clone_args>())).exit_signal as *const _ as usize },
-        32usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(clone_args),
-            "::",
-            stringify!(exit_signal)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<clone_args>())).stack as *const _ as usize },
-        40usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(clone_args),
-            "::",
-            stringify!(stack)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<clone_args>())).stack_size as *const _ as usize },
-        48usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(clone_args),
-            "::",
-            stringify!(stack_size)
-        )
-    );
-    assert_eq!(
-        unsafe { &(*(::std::ptr::null::<clone_args>())).tls as *const _ as usize },
-        56usize,
-        concat!(
-            "Offset of field: ",
-            stringify!(clone_args),
-            "::",
-            stringify!(tls)
-        )
-    );
-}
-#[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct sched_param {
     pub sched_priority: ::std::os::raw::c_int,
@@ -9725,14 +9567,6 @@ extern "C" {
     pub fn pthread_cond_broadcast(__cond: *mut pthread_cond_t) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    pub fn pthread_cond_clockwait(
-        __cond: *mut pthread_cond_t,
-        __mutex: *mut pthread_mutex_t,
-        __clock: clockid_t,
-        __timeout: *const timespec,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
     pub fn pthread_cond_destroy(__cond: *mut pthread_cond_t) -> ::std::os::raw::c_int;
 }
 extern "C" {
@@ -9868,13 +9702,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    pub fn pthread_mutex_clocklock(
-        __mutex: *mut pthread_mutex_t,
-        __clock: clockid_t,
-        __abstime: *const timespec,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
     pub fn pthread_mutex_destroy(__mutex: *mut pthread_mutex_t) -> ::std::os::raw::c_int;
 }
 extern "C" {
@@ -9938,20 +9765,6 @@ extern "C" {
     pub fn pthread_rwlockattr_setkind_np(
         __attr: *mut pthread_rwlockattr_t,
         __kind: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn pthread_rwlock_clockrdlock(
-        __rwlock: *mut pthread_rwlock_t,
-        __clock: clockid_t,
-        __timeout: *const timespec,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn pthread_rwlock_clockwrlock(
-        __rwlock: *mut pthread_rwlock_t,
-        __clock: clockid_t,
-        __timeout: *const timespec,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
