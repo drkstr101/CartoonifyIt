@@ -6,6 +6,7 @@
 /build/
 /bin/
 /target/
+/CartoonifyIt.iml
 /local.properties
 
 .settings/
