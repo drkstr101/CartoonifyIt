@@ -5,14 +5,8 @@ authors = ["Aaron R Miller <aaron.miller@waweb.io>"]
 edition = "2018"
 description = "FFI Bindings for Android NDKCamera"
 license = "MIT"
-keywords = ["android", "ndk", "camera"]
+keywords = ["android", "ndk", "camera", "ffi"]
 readme = "../README.md"
-include = [
-    "src/*",
-    "Cargo.toml",
-    "generate_bindings.sh",
-    "wrapper.h"
-]
 
 [build-dependencies]
 bindgen = "0.51.1"

@@ -3,9 +3,14 @@ name = "ndk_camera"
 version = "0.1.0"
 authors = ["Aaron R Miller <aaron.miller@waweb.io>"]
 edition = "2018"
+description = "Safe Rust Bindings for Android NDKCamera"
+license = "MIT"
+keywords = ["android", "ndk", "camera"]
+readme = "../README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[dependencies.ndk_camera_sys]
+[dependencies.ffi]
 package = "ndk_camera_sys"
 path = "../ndk_camera_sys"
+
