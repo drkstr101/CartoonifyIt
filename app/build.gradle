@@ -23,9 +23,10 @@ android {
 
 cargo {
     module = "../native_app"
-    targets = ["arm", "x86", "arm64"]
+    targets = ["arm", "x86", "x86_64", "arm64"]
     libname = "native_app"
     prebuiltToolchains = true
+    targetDirectory = rootProject.file('target')
 }
 
 repositories {
