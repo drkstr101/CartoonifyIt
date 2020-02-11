@@ -9,4 +9,4 @@
 
 .settings/
 .project
-.iml
+*.iml
