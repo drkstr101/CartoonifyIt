@@ -5,6 +5,7 @@
 /.vscode/
 /build/
 /bin/
+/target/
 /local.properties
 
 .settings/
