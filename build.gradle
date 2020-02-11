@@ -16,19 +16,6 @@ buildscript {
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        
-    }
-}
-
-task cleanRust(type: Delete) {
-    delete file('android-ndk-camera-rs/target')
-    delete file('native_app/target')
-}
-
 task clean(type: Delete) {
-    delete rootProject.buildDir
+    delete file('target')
 }

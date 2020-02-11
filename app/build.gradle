@@ -26,6 +26,7 @@ cargo {
     targets = ["arm", "x86", "arm64"]
     libname = "native_app"
     prebuiltToolchains = true
+    targetDirectory = '../target'
 }
 
 repositories {
