@@ -1,7 +1,19 @@
+extern crate android_ndk;
+extern crate android_ndk_sys;
 
+mod glue;
 mod log;
 
 use std::os::raw::{c_void};
+
+use android_ndk::android_app::AndroidApp;
+
+fn main() {
+    log::info("main()");
+    let app = unsafe { AndroidApp::from_ptr(glue::get_android_app()) };
+
+    log::info(&format!("app = {:?}", app))
+}
 
 
  #[no_mangle]
@@ -14,9 +26,7 @@ use std::os::raw::{c_void};
  }
 
 #[no_mangle]
-extern "C" fn android_main(state: *mut c_void) {
-    log::info(&format!("android_main({:?})", state));
-}
+extern "C" fn android_main(_: *mut ()) { main(); }
 
 #[link(name = "android")]
 extern "C" {
