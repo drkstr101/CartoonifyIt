@@ -7,7 +7,7 @@ under the MIT license, free to use and without adds.
 
 See the [Project Inception Document](docs/project-inception.md) for more details on the project mission and timelines.
 
-This project is a work in progress. The master branch is set to the `0.1.1` release which my serve as starting point for building your own android native activities in rust. When launched, you should be present you with a blank window and the application title.
+This project is a work in progress. The master branch is set to the `0.1.2` release which my serve as starting point for building your own android native activities in rust. When launched, you should be present you with a blank window and the application title.
 
 
 # Getting started
@@ -22,6 +22,13 @@ The build environment will need to be configured for rust android development.
 A getting started started guide may be found in the [rust-android-gradle](https://github.com/mozilla/rust-android-gradle/blob/master/README.md) project.
 
 Once the build environment has the necessary tools installed, simply run the project in Android Studio, or build all targets with the `./gradlew build` command.
+
+You will need the following toolchains to build this project:
+
+    rustup target add armv7-linux-androideabi   # for arm
+    rustup target add i686-linux-android        # for x86
+    rustup target add aarch64-linux-android     # for arm64
+    rustup target add x86_64-linux-android      # for x86_64
 
 ## What's in This Project
 
