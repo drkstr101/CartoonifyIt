@@ -85,14 +85,6 @@ fn main() {
 
     println!("toolchain path is: {}", toolchain_root.to_str().unwrap());
     assert!(toolchain_root.exists());
-
-    
-    let c_file = ndk_path
-    .join("sources")
-        .join("android")
-        .join("native_app_glue")
-        .join("android_native_app_glue.c");
-
     
     let clang_cmd = llvm_clang(&toolchain_root);
     println!("Using Clang: {}", clang_cmd.to_str().unwrap());
@@ -106,7 +98,7 @@ fn main() {
 
     // compiling android_native_app_glue.c
     if Command::new(clang_cmd)
-        .arg(c_file)
+        .arg("native_app_glue/android_native_app_glue.c")
         .arg("-c")
         .arg("-o").arg(out_dir.join("android_native_app_glue.o"))
         .arg("--sysroot").arg(sysroot)
@@ -119,7 +111,7 @@ fn main() {
     }
 
     let ar_cmd = llvm_ar(&toolchain_root);
-    println!("Using Clang: {}", ar_cmd.to_str().unwrap());
+    println!("Using AR: {}", ar_cmd.to_str().unwrap());
     assert!(ar_cmd.exists());
         
     // compiling libandroid_native_app_glue.a
