@@ -5,6 +5,7 @@ apply plugin: 'org.mozilla.rust-android-gradle.rust-android'
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
+    ndkVersion "20.1.5948944"
     defaultConfig {
         applicationId "io.waweb.cartoonifyit"
         minSdkVersion 21
@@ -27,6 +28,8 @@ cargo {
     libname = "native_app"
     prebuiltToolchains = true
     targetDirectory = '../target'
+    apiLevel = 28
+    verbose = true
 }
 
 repositories {
