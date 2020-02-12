@@ -5,7 +5,7 @@ authors = ["Aaron R Miller <aaron.miller@waweb.io>"]
 license = "MIT"
 keywords = ["android", "ndk", "camera"]
 readme = "../README.md"
-links = "native_app_glue"
+links = "android_native_app_glue"
 build = "build.rs"
 include = [
     "src/*",
