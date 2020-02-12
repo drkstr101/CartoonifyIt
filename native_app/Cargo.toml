@@ -7,13 +7,6 @@ keywords = ["android", "ndk", "camera"]
 readme = "../README.md"
 links = "android_native_app_glue"
 build = "build.rs"
-include = [
-    "src/*",
-    "Cargo.toml"
-]
-
-[build-dependencies]
-cc = "1.0"
 
 [dependencies]
 jni = "0.5.2"
