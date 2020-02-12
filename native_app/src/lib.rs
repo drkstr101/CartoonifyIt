@@ -1,20 +1,12 @@
 extern crate android_ndk;
 extern crate android_ndk_sys;
 
-mod glue;
-mod log;
+//mod glue;
+//mod log;
 
-use std::os::raw::{c_void};
+use std::os::raw::c_void;
 
-use android_ndk::android_app::AndroidApp;
-
-fn main() {
-    log::info("main()");
-    let app = unsafe { AndroidApp::from_ptr(glue::get_android_app()) };
-
-    log::info(&format!("app = {:?}", app))
-}
-
+use android_ndk_sys::native_app_glue::android_app;
 
  #[no_mangle]
  pub unsafe extern "C" fn ANativeActivity_onCreate(
@@ -26,7 +18,9 @@ fn main() {
  }
 
 #[no_mangle]
-extern "C" fn android_main(_: *mut ()) { main(); }
+extern "C" fn android_main(state: *mut android_app) {
+    println!("android_main({:?})", state);
+}
 
 #[link(name = "android")]
 extern "C" {
