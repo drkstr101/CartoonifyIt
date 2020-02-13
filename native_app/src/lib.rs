@@ -1,28 +1,26 @@
+extern crate jni;
 
-use std::os::raw::{c_void};
+use jni::JNIEnv;
+use jni::objects::JClass;
+use jni::sys::{jint, jlong, jobject};
 
- #[no_mangle]
- pub unsafe extern "C" fn ANativeActivity_onCreate(
-    activity: *mut c_void,
-    saved_state: *mut c_void,
-    saved_state_size: usize,
- ) {
-    println!("ANativeActivity_onCreate({:?}, {:?}, {:?})", activity, saved_state, saved_state_size);
-    native_app_glue_onCreate(activity, saved_state, saved_state_size);
- }
 
 #[no_mangle]
-extern "C" fn android_main(app: *mut c_void) {
-   println!("android_main({:?})", app);
-}
+pub unsafe extern "C" fn Java_com_sample_textureview_ViewActivity_createCamera(_: JNIEnv, _: JClass, _:jint, _:jint) {}
 
-#[link(name = "android")]
-#[link(name = "log")]
-extern "C" {
-    #[allow(non_snake_case)]
-    fn native_app_glue_onCreate(
-        activity: *mut c_void,
-        saved_state: *mut c_void,
-        saved_state_size: usize,
-    );
-}
+#[no_mangle]
+pub unsafe extern "C" fn Java_com_sample_textureview_ViewActivity_deleteCamera(_: JNIEnv, _: JClass, _:jlong) {}
+
+#[no_mangle]
+pub unsafe extern "C" fn Java_com_sample_textureview_ViewActivity_getMinimumCompatiblePreviewSize(_: JNIEnv, _: JClass, _:jlong) {}
+
+#[no_mangle]
+pub unsafe extern "C" fn Java_com_sample_textureview_ViewActivity_getCameraSensorOrientation(_: JNIEnv, _: JClass, _:jlong) {}
+
+#[no_mangle]
+pub unsafe extern "C" fn Java_com_sample_textureview_ViewActivity_onPreviewSurfaceCreated(_: JNIEnv, _: JClass, _:jlong, _:jobject) {}
+
+#[no_mangle]
+pub unsafe extern "C" fn Java_com_sample_textureview_ViewActivity_onPreviewSurfaceDestroyed(_: JNIEnv, _: JClass, _:jint, _:jint) {}
+
+

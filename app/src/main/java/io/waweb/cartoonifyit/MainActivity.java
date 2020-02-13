@@ -13,117 +13,69 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.waweb.cartoonifyit;
 
+
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.NativeActivity;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Size;
+import android.view.Display;
 import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ImageButton;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+
+import com.sample.textureview.R;
 
 import static android.hardware.camera2.CameraMetadata.LENS_FACING_BACK;
 
-class CameraSeekBar {
-    int _progress;
-    long _min, _max, _absVal;
-    SeekBar _seekBar;
-    TextView _sliderPrompt;
-    CameraSeekBar() {
-        _progress = 0;
-        _min = _max = _absVal  = 0;
-    }
+public class MainActivity extends Activity
+        implements TextureView.SurfaceTextureListener,
+        ActivityCompat.OnRequestPermissionsResultCallback {
+    long ndkCamera_;
+    private TextureView textureView_;
+    Surface surface_ = null;
+    private Size cameraPreviewSize_;
 
-    CameraSeekBar(SeekBar seekBar, TextView textView, long min, long max, long val) {
-        _seekBar = seekBar;
-        _sliderPrompt = textView;
-        _min = min;
-        _max = max;
-        _absVal = val;
-
-        if(_min != _max) {
-            _progress = (int) ((_absVal - _min) * _seekBar.getMax() / (_max - _min));
-            seekBar.setProgress(_progress);
-            updateProgress(_progress);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        onWindowFocusChanged(true);
+        setContentView(R.layout.activity_main);
+        if (isCamera2Device()) {
+            RequestCamera();
         } else {
-            _progress = 0;
-            seekBar.setEnabled(false);
+            Log.e("CameraSample", "Found legacy camera device, this sample needs camera2 device");
         }
     }
 
-    public boolean isSupported() {
-        return (_min != _max);
-    }
-    public void updateProgress(int progress) {
-        if (!isSupported())
-            return;
-
-        _progress = progress;
-        _absVal = (progress * ( _max - _min )) / _seekBar.getMax() + _min;
-        int val = (progress * (_seekBar.getWidth() - 2 * _seekBar.getThumbOffset())) / _seekBar.getMax();
-        _sliderPrompt.setText("" + _absVal);
-        _sliderPrompt.setX(_seekBar.getX() + val + _seekBar.getThumbOffset() / 2);
-    }
-    public int getProgress() {
-        return _progress;
-    }
-    public void updateAbsProgress(long val) {
-        if (!isSupported())
-            return;
-        int progress = (int)((val - _min) * _seekBar.getMax() / (_max - _min));
-        updateProgress(progress);
-    }
-    public long getAbsProgress() {
-        return _absVal;
-    }
-}
-
-public class MainActivity extends NativeActivity
-        implements ActivityCompat.OnRequestPermissionsResultCallback {
-    volatile MainActivity _savedInstance;
-    PopupWindow _popupWindow;
-    ImageButton _takePhoto;
-    CameraSeekBar _exposure, _sensitivity;
-    long[] _initParams;
-
-    private final String DBG_TAG = "MainActivity";
-    
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.i(DBG_TAG, "OnCreate()");
-        // new initialization here... request for permission
-        _savedInstance  = this;
-
-        setImmersiveSticky();
-        View decorView = getWindow().getDecorView();
-        decorView.setOnSystemUiVisibilityChangeListener
-                (new View.OnSystemUiVisibilityChangeListener() {
-                    @Override
-                    public void onSystemUiVisibilityChange(int visibility) {
-                        setImmersiveSticky();
-                    }
-                });
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
     }
-
     private boolean isCamera2Device() {
         CameraManager camMgr = (CameraManager)getSystemService(Context.CAMERA_SERVICE);
         boolean camera2Dev = true;
@@ -135,7 +87,7 @@ public class MainActivity extends NativeActivity
                     int deviceLevel = characteristics.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL);
                     int facing = characteristics.get(CameraCharacteristics.LENS_FACING);
                     if (deviceLevel == CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LEGACY &&
-                        facing == LENS_FACING_BACK) {
+                            facing == LENS_FACING_BACK) {
                         camera2Dev =  false;
                     }
                 }
@@ -146,68 +98,109 @@ public class MainActivity extends NativeActivity
         }
         return camera2Dev;
     }
-
-    // get current rotation method
-    int getRotationDegree() {
-        return 90 * ((WindowManager)(getSystemService(WINDOW_SERVICE)))
-                .getDefaultDisplay()
-                .getRotation();
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setImmersiveSticky();
-    }
-    void setImmersiveSticky() {
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-    }
-
-    @Override
-    protected void onPause() {
-        if (_popupWindow != null && _popupWindow.isShowing()) {
-            _popupWindow.dismiss();
-            _popupWindow = null;
+    private void createTextureView() {
+        textureView_ = (TextureView) findViewById(R.id.texturePreview);
+        textureView_.setSurfaceTextureListener(this);
+        if (textureView_.isAvailable()) {
+            onSurfaceTextureAvailable(textureView_.getSurfaceTexture(),
+                    textureView_.getWidth(), textureView_.getHeight());
         }
-        super.onPause();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onSurfaceTextureAvailable(SurfaceTexture surface,
+                                          int width, int height) {
+        createNativeCamera();
+
+        resizeTextureView(width, height);
+        surface.setDefaultBufferSize(cameraPreviewSize_.getWidth(),
+                cameraPreviewSize_.getHeight());
+        surface_ = new Surface(surface);
+        onPreviewSurfaceCreated(ndkCamera_, surface_);
+    }
+
+    private void resizeTextureView(int textureWidth, int textureHeight) {
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        int newWidth = textureWidth;
+        int newHeight = textureWidth * cameraPreviewSize_.getWidth() / cameraPreviewSize_.getHeight();
+
+        if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
+            newHeight = (textureWidth * cameraPreviewSize_.getHeight()) / cameraPreviewSize_.getWidth();
+        }
+        textureView_.setLayoutParams(
+                new FrameLayout.LayoutParams(newWidth, newHeight, Gravity.CENTER));
+        configureTransform(newWidth, newHeight);
+    }
+
+    /**
+     * configureTransform()
+     * Courtesy to https://github.com/google/cameraview/blob/master/library/src/main/api14/com/google/android/cameraview/TextureViewPreview.java#L108
+     *
+     * @param width  TextureView width
+     * @param height is TextureView height
+     */
+    void configureTransform(int width, int height) {
+        int mDisplayOrientation = getWindowManager().getDefaultDisplay().getRotation() * 90;
+        Matrix matrix = new Matrix();
+        if (mDisplayOrientation % 180 == 90) {
+            //final int width = getWidth();
+            //final int height = getHeight();
+            // Rotate the camera preview when the screen is landscape.
+            matrix.setPolyToPoly(
+                    new float[]{
+                            0.f, 0.f, // top left
+                            width, 0.f, // top right
+                            0.f, height, // bottom left
+                            width, height, // bottom right
+                    }, 0,
+                    mDisplayOrientation == 90 ?
+                            // Clockwise
+                            new float[]{
+                                    0.f, height, // top left
+                                    0.f, 0.f,    // top right
+                                    width, height, // bottom left
+                                    width, 0.f, // bottom right
+                            } : // mDisplayOrientation == 270
+                            // Counter-clockwise
+                            new float[]{
+                                    width, 0.f, // top left
+                                    width, height, // top right
+                                    0.f, 0.f, // bottom left
+                                    0.f, height, // bottom right
+                            }, 0,
+                    4);
+        } else if (mDisplayOrientation == 180) {
+            matrix.postRotate(180, width / 2, height / 2);
+        }
+        textureView_.setTransform(matrix);
+    }
+
+    public void onSurfaceTextureSizeChanged(SurfaceTexture surface,
+                                            int width, int height) {
+    }
+
+    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        onPreviewSurfaceDestroyed(ndkCamera_, surface_);
+        deleteCamera(ndkCamera_, surface_);
+        ndkCamera_ = 0;
+        surface_ = null;
+        return true;
+    }
+
+    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
     }
 
     private static final int PERMISSION_REQUEST_CODE_CAMERA = 1;
+
     public void RequestCamera() {
-        if(!isCamera2Device()) {
-            Log.e(DBG_TAG, "Found legacy camera Device, this sample needs camera2 device");
-            return;
-        }
-        String[] accessPermissions = new String[] {
-            Manifest.permission.CAMERA,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        };
-        boolean needRequire  = false;
-        for(String access : accessPermissions) {
-           int curPermission = ActivityCompat.checkSelfPermission(this, access);
-           if(curPermission != PackageManager.PERMISSION_GRANTED) {
-               needRequire = true;
-               break;
-           }
-        }
-        if (needRequire) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) !=
+                PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
                     this,
-                    accessPermissions,
+                    new String[]{Manifest.permission.CAMERA},
                     PERMISSION_REQUEST_CODE_CAMERA);
             return;
         }
-        notifyCameraPermission(true);
+        createTextureView();
     }
 
     @Override
@@ -219,136 +212,56 @@ public class MainActivity extends NativeActivity
          */
         if (PERMISSION_REQUEST_CODE_CAMERA != requestCode) {
             super.onRequestPermissionsResult(requestCode,
-                                             permissions,
-                                             grantResults);
+                    permissions,
+                    grantResults);
             return;
         }
 
-        if(grantResults.length == 2) {
-            notifyCameraPermission(grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[1] == PackageManager.PERMISSION_GRANTED);
+        if (grantResults.length == 1 &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Thread initCamera = new Thread(new Runnable() {
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            createTextureView();
+                        }
+                    });
+                }
+            });
+            initCamera.start();
         }
     }
 
-    /**
-     * This method is envoked from rust through the JNIEnv interface
+    private void createNativeCamera() {
+        Display display = getWindowManager().getDefaultDisplay();
+        int height = display.getMode().getPhysicalHeight();
+        int width = display.getMode().getPhysicalWidth();
 
-     * params[] exposure and sensitivity init values in (min, max, curVa) tuple
-     *   0: exposure min
-     *   1: exposure max
-     *   2: exposure val
-     *   3: sensitivity min
-     *   4: sensitivity max
-     *   5: sensitivity val
-     */
-    @SuppressLint("InflateParams")
-    public void initNativeUI(final long[] params)
-    {
-        // make our own copy
-        _initParams = new long[params.length];
-        System.arraycopy(params, 0, _initParams, 0, params.length);
+        ndkCamera_ = createCamera(width, height);
 
-        runOnUiThread(new Runnable()  {
-            @Override
-            public void run()  {
-                try {
-                    if (_popupWindow != null) {
-                        _popupWindow.dismiss();
-                    }
-                    LayoutInflater layoutInflater
-                            = (LayoutInflater) getBaseContext()
-                            .getSystemService(LAYOUT_INFLATER_SERVICE);
-                    View popupView = layoutInflater.inflate(R.layout.widgets, null);
-                    _popupWindow = new PopupWindow(
-                            popupView,
-                            WindowManager.LayoutParams.MATCH_PARENT,
-                            WindowManager.LayoutParams.WRAP_CONTENT);
+        cameraPreviewSize_ = getMinimumCompatiblePreviewSize(ndkCamera_);
 
-                    RelativeLayout mainLayout = new RelativeLayout(_savedInstance);
-                    ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(
-                            -1, -1);
-                    params.setMargins(0, 0, 0, 0);
-                    _savedInstance.setContentView(mainLayout, params);
-
-                    // Show our UI over NativeActivity window
-                    _popupWindow.showAtLocation(mainLayout, Gravity.BOTTOM | Gravity.START, 0, 0);
-                    _popupWindow.update();
-
-                    _takePhoto = (ImageButton) popupView.findViewById(R.id.takePhoto);
-                    _takePhoto.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            takePhoto();
-                        }
-                    });
-                    _takePhoto.setEnabled(true);
-                    (popupView.findViewById(R.id.exposureLabel)).setEnabled(true);
-                    (popupView.findViewById(R.id.sensitivityLabel)).setEnabled(true);
-
-                    SeekBar seekBar = (SeekBar) popupView.findViewById(R.id.exposure_seekbar);
-                    _exposure = new CameraSeekBar(seekBar,
-                            (TextView) popupView.findViewById(R.id.exposureVal),
-                            _initParams[0], _initParams[1], _initParams[2]);
-                    seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                            _exposure.updateProgress(progress);
-                            onExposureChanged(_exposure.getAbsProgress());
-                        }
-
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar) {
-                        }
-
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar) {
-                        }
-                    });
-                    seekBar = ((SeekBar) popupView.findViewById(R.id.sensitivity_seekbar));
-                    _sensitivity = new CameraSeekBar(seekBar,
-                            (TextView) popupView.findViewById(R.id.sensitivityVal),
-                            _initParams[3], _initParams[4], _initParams[5]);
-                    seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                            _sensitivity.updateProgress(progress);
-                            onSensitivityChanged(_sensitivity.getAbsProgress());
-                        }
-
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar) {
-                        }
-
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar) {
-                        }
-                    });
-                } catch (WindowManager.BadTokenException e) {
-                    // UI error out, ignore and continue
-                    Log.e(DBG_TAG, "UI Exception Happened: " + e.getMessage());
-                }
-            }});
-    }
-    /**
-      Called from Native side to notify that a photo is taken
-     */
-    public void OnPhotoTaken(String fileName) {
-        final String name = fileName;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getApplicationContext(),
-                        "Photo saved to " + name, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
-    native static void notifyCameraPermission(boolean granted);
-    native static void takePhoto();
-    native void onExposureChanged(long exposure);
-    native void onSensitivityChanged(long sensitivity);
+    /*
+     * Functions calling into NDKCamera side to:
+     *     CreateCamera / DeleteCamera object
+     *     Start/Stop Preview
+     *     Pulling Camera Parameters
+     */
+    private native long createCamera(int width, int height);
+
+    private native Size getMinimumCompatiblePreviewSize(long ndkCamera);
+
+    private native void onPreviewSurfaceCreated(long ndkCamera, Surface surface);
+
+    private native void onPreviewSurfaceDestroyed(long ndkCamera, Surface surface);
+
+    private native void deleteCamera(long ndkCamera, Surface surface);
 
     static {
         System.loadLibrary("native_app");
     }
+
 }

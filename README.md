@@ -1,13 +1,13 @@
 # Introduction
 
+**This project is a work in progress**. Please see active branches for ongoing development.
+
 The `CartoonifyIt` project is a demo Augmented Reality (AR) application built with Rust and the Android NDK.
 The goal of this project is to gain experience with low-level systems programming in Rust, while providing
 a useful and interesting domain to experiment in. The result of this demo will be published to the Play Store
 under the MIT license, free to use and without adds.
 
 See the [Project Inception Document](docs/project-inception.md) for more details on the project mission and timelines.
-
-This project is a work in progress. The master branch is set to the `0.1.1` release which my serve as starting point for building your own android native activities in rust. When launched, you should be present you with a blank window and the application title.
 
 
 # Getting started

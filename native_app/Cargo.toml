@@ -1,24 +1,13 @@
 [package]
 name = "native_app"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Aaron R Miller <aaron.miller@waweb.io>"]
 license = "MIT"
 keywords = ["android", "ndk", "camera"]
 readme = "../README.md"
-links = "native_app_glue"
-build = "build.rs"
-include = [
-    "src/*",
-    "Cargo.toml"
-]
-
-[build-dependencies]
-cc = "1.0"
 
 [dependencies]
 jni = "0.5.2"
-android-ndk = "0.0.6"
-android-ndk-sys = "0.2.0"
 
 [lib]
 crate_type = ["staticlib", "dylib"]

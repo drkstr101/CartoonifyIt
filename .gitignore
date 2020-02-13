@@ -5,8 +5,9 @@
 /.vscode/
 /build/
 /bin/
+/target/
 /local.properties
 
 .settings/
 .project
-.iml
+*.iml
