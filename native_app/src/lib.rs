@@ -3,7 +3,7 @@ extern crate jni;
 mod camera_engine;
 
 use jni::JNIEnv;
-use jni::objects::JClass;
+use jni::objects::{JClass, JValue};
 use jni::sys::{jint, jlong, jobject};
 
 use camera_engine::CameraAppEngine;
@@ -26,12 +26,23 @@ pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_createCamera(env: JNIE
 
 #[no_mangle]
 pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_deleteCamera(_: JNIEnv, _: JClass, engine_ptr:jlong) {
-    let engine = engine_ptr as *mut CameraAppEngine;
-    app_engine_destroy(engine);
+    app_engine_destroy(engine_ptr as *mut CameraAppEngine);
 }
 
 #[no_mangle]
-pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_getMinimumCompatiblePreviewSize(_: JNIEnv, _: JClass, _:jlong) {}
+pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_getMinimumCompatiblePreviewSize(env: JNIEnv, _: JClass, engine_ptr:jlong) -> jobject {
+
+    let app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
+    let args: [JValue; 2] = [
+        JValue::from(app.width()), 
+        JValue::from(app.height())
+    ];
+        
+    let cls = env.find_class("android/util/Size").unwrap();
+    env.new_object(cls, "(II)V", &args)
+        .unwrap()
+        .into_inner()
+}
 
 #[no_mangle]
 pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_getCameraSensorOrientation(_: JNIEnv, _: JClass, _:jlong) {}
