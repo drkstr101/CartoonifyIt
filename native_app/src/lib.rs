@@ -45,9 +45,6 @@ pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_getMinimumCompatiblePr
 }
 
 #[no_mangle]
-pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_getCameraSensorOrientation(_: JNIEnv, _: JClass, _:jlong) {}
-
-#[no_mangle]
 pub unsafe extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_onPreviewSurfaceCreated(_: JNIEnv, _: JClass, _:jlong, _:jobject) {}
 
 #[no_mangle]
