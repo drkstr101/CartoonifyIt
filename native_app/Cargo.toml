@@ -1,6 +1,7 @@
 [package]
 name = "native_app"
 version = "0.1.2"
+description = "Rust Native Activity"
 authors = ["Aaron R Miller <aaron.miller@waweb.io>"]
 license = "MIT"
 keywords = ["android", "ndk", "camera"]
@@ -8,6 +9,10 @@ readme = "../README.md"
 
 [dependencies]
 jni = "0.13.1"
+
+[dependencies.ffi]
+package = "native_app_sys"
+path = "../native_app_sys"
 
 [lib]
 crate_type = ["staticlib", "dylib"]

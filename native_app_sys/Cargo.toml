@@ -1,0 +1,8 @@
+[package]
+name = "native_app_sys"
+version = "0.1.2"
+description = "FFI Bindings for Rust Native Activity"
+authors = ["Aaron R Miller <aaron.miller@waweb.io>"]
+license = "MIT"
+keywords = ["android", "ndk", "camera", "ffi"]
+readme = "../README.md"
