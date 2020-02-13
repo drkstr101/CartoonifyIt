@@ -7,7 +7,7 @@ keywords = ["android", "ndk", "camera"]
 readme = "../README.md"
 
 [dependencies]
-jni = "0.5.2"
+jni = "0.13.1"
 
 [lib]
 crate_type = ["staticlib", "dylib"]
