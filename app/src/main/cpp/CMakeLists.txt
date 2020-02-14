@@ -17,7 +17,6 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
-set(COMMON_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../../common)
 
 # now build app's shared lib
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Werror")
@@ -31,10 +30,7 @@ add_library(camera_textureview SHARED
     ${CMAKE_CURRENT_SOURCE_DIR}/camera_manager.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/camera_engine.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/camera_listeners.cpp
-    ${COMMON_SOURCE_DIR}/utils/camera_utils.cpp)
-
-# add include path
-target_include_directories(camera_textureview PRIVATE ${COMMON_SOURCE_DIR})
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/camera_utils.cpp)
 
 # add lib dependencies
 target_link_libraries(camera_textureview dl android log m camera2ndk)
