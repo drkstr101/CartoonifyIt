@@ -9,3 +9,4 @@
 #include <camera/NdkCameraMetadataTags.h>
 #include <camera/NdkCameraWindowType.h>
 #include <camera/NdkCaptureRequest.h>
+#include <media/NdkImage.h>

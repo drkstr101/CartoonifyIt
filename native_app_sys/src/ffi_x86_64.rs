@@ -9743,6 +9743,172 @@ extern "C" {
         callback: *const ACameraManager_ExtendedAvailabilityCallbacks,
     ) -> camera_status_t;
 }
+pub const media_status_t_AMEDIA_OK: media_status_t = 0;
+pub const media_status_t_AMEDIACODEC_ERROR_INSUFFICIENT_RESOURCE: media_status_t = 1100;
+pub const media_status_t_AMEDIACODEC_ERROR_RECLAIMED: media_status_t = 1101;
+pub const media_status_t_AMEDIA_ERROR_BASE: media_status_t = -10000;
+pub const media_status_t_AMEDIA_ERROR_UNKNOWN: media_status_t = -10000;
+pub const media_status_t_AMEDIA_ERROR_MALFORMED: media_status_t = -10001;
+pub const media_status_t_AMEDIA_ERROR_UNSUPPORTED: media_status_t = -10002;
+pub const media_status_t_AMEDIA_ERROR_INVALID_OBJECT: media_status_t = -10003;
+pub const media_status_t_AMEDIA_ERROR_INVALID_PARAMETER: media_status_t = -10004;
+pub const media_status_t_AMEDIA_ERROR_INVALID_OPERATION: media_status_t = -10005;
+pub const media_status_t_AMEDIA_ERROR_END_OF_STREAM: media_status_t = -10006;
+pub const media_status_t_AMEDIA_ERROR_IO: media_status_t = -10007;
+pub const media_status_t_AMEDIA_ERROR_WOULD_BLOCK: media_status_t = -10008;
+pub const media_status_t_AMEDIA_DRM_ERROR_BASE: media_status_t = -20000;
+pub const media_status_t_AMEDIA_DRM_NOT_PROVISIONED: media_status_t = -20001;
+pub const media_status_t_AMEDIA_DRM_RESOURCE_BUSY: media_status_t = -20002;
+pub const media_status_t_AMEDIA_DRM_DEVICE_REVOKED: media_status_t = -20003;
+pub const media_status_t_AMEDIA_DRM_SHORT_BUFFER: media_status_t = -20004;
+pub const media_status_t_AMEDIA_DRM_SESSION_NOT_OPENED: media_status_t = -20005;
+pub const media_status_t_AMEDIA_DRM_TAMPER_DETECTED: media_status_t = -20006;
+pub const media_status_t_AMEDIA_DRM_VERIFY_FAILED: media_status_t = -20007;
+pub const media_status_t_AMEDIA_DRM_NEED_KEY: media_status_t = -20008;
+pub const media_status_t_AMEDIA_DRM_LICENSE_EXPIRED: media_status_t = -20009;
+pub const media_status_t_AMEDIA_IMGREADER_ERROR_BASE: media_status_t = -30000;
+pub const media_status_t_AMEDIA_IMGREADER_NO_BUFFER_AVAILABLE: media_status_t = -30001;
+pub const media_status_t_AMEDIA_IMGREADER_MAX_IMAGES_ACQUIRED: media_status_t = -30002;
+pub const media_status_t_AMEDIA_IMGREADER_CANNOT_LOCK_IMAGE: media_status_t = -30003;
+pub const media_status_t_AMEDIA_IMGREADER_CANNOT_UNLOCK_IMAGE: media_status_t = -30004;
+pub const media_status_t_AMEDIA_IMGREADER_IMAGE_NOT_LOCKED: media_status_t = -30005;
+pub type media_status_t = i32;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct AImage {
+    _unused: [u8; 0],
+}
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_RGBA_8888: AIMAGE_FORMATS = 1;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_RGBX_8888: AIMAGE_FORMATS = 2;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_RGB_888: AIMAGE_FORMATS = 3;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_RGB_565: AIMAGE_FORMATS = 4;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_RGBA_FP16: AIMAGE_FORMATS = 22;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_YUV_420_888: AIMAGE_FORMATS = 35;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_JPEG: AIMAGE_FORMATS = 256;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_RAW16: AIMAGE_FORMATS = 32;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_RAW_PRIVATE: AIMAGE_FORMATS = 36;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_RAW10: AIMAGE_FORMATS = 37;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_RAW12: AIMAGE_FORMATS = 38;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_DEPTH16: AIMAGE_FORMATS = 1144402265;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_DEPTH_POINT_CLOUD: AIMAGE_FORMATS = 257;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_PRIVATE: AIMAGE_FORMATS = 34;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_Y8: AIMAGE_FORMATS = 538982489;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_HEIC: AIMAGE_FORMATS = 1212500294;
+pub const AIMAGE_FORMATS_AIMAGE_FORMAT_DEPTH_JPEG: AIMAGE_FORMATS = 1768253795;
+pub type AIMAGE_FORMATS = u32;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct AImageCropRect {
+    pub left: i32,
+    pub top: i32,
+    pub right: i32,
+    pub bottom: i32,
+}
+#[test]
+fn bindgen_test_layout_AImageCropRect() {
+    assert_eq!(
+        ::std::mem::size_of::<AImageCropRect>(),
+        16usize,
+        concat!("Size of: ", stringify!(AImageCropRect))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<AImageCropRect>(),
+        4usize,
+        concat!("Alignment of ", stringify!(AImageCropRect))
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<AImageCropRect>())).left as *const _ as usize },
+        0usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(AImageCropRect),
+            "::",
+            stringify!(left)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<AImageCropRect>())).top as *const _ as usize },
+        4usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(AImageCropRect),
+            "::",
+            stringify!(top)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<AImageCropRect>())).right as *const _ as usize },
+        8usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(AImageCropRect),
+            "::",
+            stringify!(right)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<AImageCropRect>())).bottom as *const _ as usize },
+        12usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(AImageCropRect),
+            "::",
+            stringify!(bottom)
+        )
+    );
+}
+extern "C" {
+    pub fn AImage_delete(image: *mut AImage);
+}
+extern "C" {
+    pub fn AImage_getWidth(image: *const AImage, width: *mut i32) -> media_status_t;
+}
+extern "C" {
+    pub fn AImage_getHeight(image: *const AImage, height: *mut i32) -> media_status_t;
+}
+extern "C" {
+    pub fn AImage_getFormat(image: *const AImage, format: *mut i32) -> media_status_t;
+}
+extern "C" {
+    pub fn AImage_getCropRect(image: *const AImage, rect: *mut AImageCropRect) -> media_status_t;
+}
+extern "C" {
+    pub fn AImage_getTimestamp(image: *const AImage, timestampNs: *mut i64) -> media_status_t;
+}
+extern "C" {
+    pub fn AImage_getNumberOfPlanes(image: *const AImage, numPlanes: *mut i32) -> media_status_t;
+}
+extern "C" {
+    pub fn AImage_getPlanePixelStride(
+        image: *const AImage,
+        planeIdx: ::std::os::raw::c_int,
+        pixelStride: *mut i32,
+    ) -> media_status_t;
+}
+extern "C" {
+    pub fn AImage_getPlaneRowStride(
+        image: *const AImage,
+        planeIdx: ::std::os::raw::c_int,
+        rowStride: *mut i32,
+    ) -> media_status_t;
+}
+extern "C" {
+    pub fn AImage_getPlaneData(
+        image: *const AImage,
+        planeIdx: ::std::os::raw::c_int,
+        data: *mut *mut u8,
+        dataLength: *mut ::std::os::raw::c_int,
+    ) -> media_status_t;
+}
+extern "C" {
+    pub fn AImage_deleteAsync(image: *mut AImage, releaseFenceFd: ::std::os::raw::c_int);
+}
+extern "C" {
+    pub fn AImage_getHardwareBuffer(
+        image: *const AImage,
+        buffer: *mut *mut AHardwareBuffer,
+    ) -> media_status_t;
+}
 pub type __builtin_va_list = [__va_list_tag; 1usize];
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
