@@ -1,4 +1,5 @@
 extern crate jni;
+extern crate ffi;
 
 mod camera_engine;
 mod camera_manager;
