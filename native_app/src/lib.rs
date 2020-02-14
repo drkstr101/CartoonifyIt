@@ -1,6 +1,7 @@
 extern crate jni;
 
 mod camera_engine;
+mod camera_manager;
 
 use jni::JNIEnv;
 use jni::objects::{JClass, JValue};
