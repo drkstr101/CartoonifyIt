@@ -38,7 +38,7 @@ RUN rustup --version; \
     rustc --version
 
 # Install Rust Build Targets
-RUN rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android
+RUN rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
 
 # install Android SDK
 RUN mkdir -p ${ANDROID_HOME} \
