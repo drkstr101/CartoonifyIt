@@ -36,8 +36,8 @@ pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_getMinimumCompatiblePr
 
     let app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
     let args: [JValue; 2] = [
-        JValue::from(app.width()), 
-        JValue::from(app.height())
+        JValue::from(app.get_compatible_camera_res().width), 
+        JValue::from(app.get_compatible_camera_res().height)
     ];
         
     let cls = env.find_class("android/util/Size").unwrap();
@@ -47,9 +47,34 @@ pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_getMinimumCompatiblePr
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_onPreviewSurfaceCreated(_: JNIEnv, _: JClass, _:jlong, _:jobject) {}
+pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_onPreviewSurfaceCreated(_: JNIEnv, _: JClass, engine_ptr:jlong, surface:jobject) {
+    let app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
+    app.create_camera_session(surface);
+    app.start_preview(true);
+}
 
 #[no_mangle]
-pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_onPreviewSurfaceDestroyed(_: JNIEnv, _: JClass, _:jlong, _:jobject) {}
+pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_onPreviewSurfaceDestroyed(_: JNIEnv, _: JClass, engine_ptr:jlong, _:jobject) {
+    let app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
+    app.start_preview(false);
+
+    // TODO port cpp code if necessary 
+    // jclass cls = env->FindClass("android/view/Surface");
+    // jmethodID toString =
+    //     env->GetMethodID(cls, "toString", "()Ljava/lang/String;");
+  
+    // jstring destroyObjStr =
+    //     reinterpret_cast<jstring>(env->CallObjectMethod(surface, toString));
+    // const char *destroyObjName = env->GetStringUTFChars(destroyObjStr, nullptr);
+  
+    // jstring appObjStr = reinterpret_cast<jstring>(
+    //     env->CallObjectMethod(pApp->GetSurfaceObject(), toString));
+    // const char *appObjName = env->GetStringUTFChars(appObjStr, nullptr);
+  
+    // ASSERT(!strcmp(destroyObjName, appObjName), "object Name MisMatch");
+  
+    // env->ReleaseStringUTFChars(destroyObjStr, destroyObjName);
+    // env->ReleaseStringUTFChars(appObjStr, appObjName);
+}
 
 
