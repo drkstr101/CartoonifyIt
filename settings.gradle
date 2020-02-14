@@ -2,3 +2,4 @@ rootProject.name = "CartoonifyIt"
 
 include 'app'
 include 'native_app'
+include 'native_app_sys'
