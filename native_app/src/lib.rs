@@ -48,14 +48,14 @@ pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_getMinimumCompatiblePr
 
 #[no_mangle]
 pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_onPreviewSurfaceCreated(_: JNIEnv, _: JClass, engine_ptr:jlong, surface:jobject) {
-    let app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
-    app.create_camera_session(surface);
-    app.start_preview(true);
+    // let mut app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
+    // app.create_camera_session(surface);
+    // app.start_preview(true);
 }
 
 #[no_mangle]
 pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_onPreviewSurfaceDestroyed(_: JNIEnv, _: JClass, engine_ptr:jlong, _:jobject) {
-    let app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
+    let mut app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
     app.start_preview(false);
 
     // TODO port cpp code if necessary 

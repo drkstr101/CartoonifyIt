@@ -1,4 +1,4 @@
-// use ffi::{ACameraDevice, ACameraCaptureSession, ACaptureRequest, ACameraCaptureFailure, ANativeWindow};
+use ffi::{ANativeWindow};
 
 use ffi::{AIMAGE_FORMATS, AIMAGE_FORMATS_AIMAGE_FORMAT_YUV_420_888};
 
@@ -30,21 +30,21 @@ pub struct NDKCamera {}
 impl NDKCamera {
     pub fn new() -> NDKCamera { NDKCamera{} }
     // pub fn enumerate_camera(&self) {}
-    // pub fn match_capture_size_request(&self, request_width: i32, request_height: i32, view: &ImageFormat, capture: &ImageFormat) -> bool { true }
-    // pub fn create_session(preview_window: &ANativeWindow, jpg_window: &ANativeWindow, manaul_preview: bool, image_rotation: i32) -> bool { true }
+    pub fn match_capture_size_request(&self, _: i32, _: i32, _: &ImageFormat) -> bool { true }
+    pub fn create_session(&self, _: *mut ANativeWindow) -> bool { true }
 
-    // pub fn get_sensor_orientation(facing: i32, angle: i32) -> bool { true }
-    // pub fn on_camera_status_changed(id: (/* `const char*` */), available: bool) { }
-    // pub fn on_device_state(dev: &ACameraDevice) { }
-    // pub fn on_device_error(dev: &ACameraDevice, err: i32) { }
-    // pub fn on_session_state(ses: &ACameraCaptureSession, state: CaptureSessionState) { }
-    // pub fn on_capture_sequence_end(session: ACameraCaptureSession, sequence_id: i32, frame_num: i64) { }
-    // pub fn on_capture_failed(session: &ACameraCaptureSession, request: &ACaptureRequest, failure: &ACameraCaptureFailure) { }
+    // pub fn get_sensor_orientation(&self, facing: i32, angle: i32) -> bool { true }
+    // pub fn on_camera_status_changed(&self, id: (/* `const char*` */), available: bool) { }
+    // pub fn on_device_state(&self, dev: &ACameraDevice) { }
+    // pub fn on_device_error(&self, dev: &ACameraDevice, err: i32) { }
+    // pub fn on_session_state(&self, ses: &ACameraCaptureSession, state: CaptureSessionState) { }
+    // pub fn on_capture_sequence_end(&self, session: ACameraCaptureSession, sequence_id: i32, frame_num: i64) { }
+    // pub fn on_capture_failed(&self, session: &ACameraCaptureSession, request: &ACaptureRequest, failure: &ACameraCaptureFailure) { }
 
-    // pub fn start_preview(start: bool) { }
-    // pub fn take_photo() -> bool { true }
-    // pub fn get_exposure_range(min: &i64, max: &i64, cur_val: &i64) -> bool { true }
-    // pub fn get_sensitivity_range(min: &i64, max: &i64, cur_val: &i64) -> bool { true }
+    pub fn start_preview(&self, _: bool) { }
+    // pub fn take_photo(&self) -> bool { true }
+    // pub fn get_exposure_range(&self, min: &i64, max: &i64, cur_val: &i64) -> bool { true }
+    // pub fn get_sensitivity_range(&self, min: &i64, max: &i64, cur_val: &i64) -> bool { true }
 
-    // pub fn update_camera_request_parameter(code: i32, val: i64) { }
+    // pub fn update_camera_request_parameter(&self, code: i32, val: i64) { }
 }
