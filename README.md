@@ -33,7 +33,11 @@ have created your project. The application source is based off the [Android NDKC
 
 ### Rust Native Activity (`native_app`)
 
-The rust native activity implements the main UI thread, and provides an injected `android_native_app_glue` based on the [android-rs-glue](https://github.com/rust-windowing/android-rs-glue) crate. The glue code has been forked so that it may be injected without depending on the cargo build task to package your apk. Instead we use the `rust-android-gradle` plugin provided by Mozilla to build and package the apk.
+This is a Cargo crate which contains the rust implementation of the native activity ported from C++. We use the `rust-android-gradle` plugin provided by Mozilla to build and package the native code into the apk.
+
+### Rust FFI Bindings for Native Activity (`native_app_sys`)
+
+This is a Cargo crate which holds the generated ffi bindings used by the native activity. See the `generate-bindings.sh` script to see how these bindings are generated. Use `cargo install bindgen` before running the script.
 
 ### Dockerfile Environment (`Dockerfile`)
 
