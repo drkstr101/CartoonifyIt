@@ -5,13 +5,13 @@ mod camera_engine;
 mod camera_manager;
 
 use jni::JNIEnv;
-use jni::objects::{JClass, JValue};
+use jni::objects::{JClass, JValue, JObject};
 use jni::sys::{jint, jlong, jobject};
 
 use camera_engine::CameraAppEngine;
 
-fn app_engine_create<'a>(env: &'a JNIEnv<'static>, width: i32, height: i32) -> *mut CameraAppEngine<'a> {
-    let engine = CameraAppEngine::new(env, width, height);
+fn app_engine_create(env: &JNIEnv, width: i32, height: i32) -> *mut CameraAppEngine {
+    let engine = CameraAppEngine::new(env.get_native_interface(), width, height);
     Box::into_raw(Box::new(engine))
 }
 
@@ -48,9 +48,8 @@ pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_getMinimumCompatiblePr
 
 #[no_mangle]
 pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_onPreviewSurfaceCreated(_: JNIEnv, _: JClass, engine_ptr:jlong, surface:jobject) {
-    // let mut app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
-    // app.create_camera_session(surface);
-    // app.start_preview(true);
+    let mut app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
+    app.create_camera_session(surface);
 }
 
 #[no_mangle]
