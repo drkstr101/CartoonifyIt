@@ -1,6 +1,5 @@
 
-use jni::sys::jobject;
-use jni::sys::JNIEnv;
+use ffi::{JNIEnv, jobject};
 
 use camera_manager::{ImageFormat, NDKCamera};
 
@@ -14,7 +13,7 @@ pub struct CameraAppEngine {
 }
 
 impl CameraAppEngine {
-    pub fn new(_env: *mut JNIEnv, _request_width: i32, _request_height: i32) -> CameraAppEngine {
+    pub fn new(_env: &mut JNIEnv, _request_width: i32, _request_height: i32) -> CameraAppEngine {
         let view = ImageFormat::new(_request_width, _request_height);
         let camera = NDKCamera::new();
         camera.match_capture_size_request(_request_width, _request_height, &view);
