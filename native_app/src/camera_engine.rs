@@ -1,5 +1,5 @@
 
-use ffi::{JNIEnv, jobject};
+use ffi::{JNIEnv, jobject, ANativeWindow_fromSurface};
 
 use camera_manager::{ImageFormat, NDKCamera};
 
@@ -35,8 +35,8 @@ impl CameraAppEngine {
     pub fn get_compatible_camera_res(&self) -> &Box<ImageFormat> { &self._compatible_camera_res }
 
     pub fn create_camera_session(&mut self, surface: jobject) {
-        // error!
-        // let window = ffi::ANativeWindow_fromSurface(self._env, surface);
+        let window = unsafe { ANativeWindow_fromSurface(self._env, surface) };
+        self.camera().create_session(window);
     }
 
     pub fn start_preview(&mut self, start: bool) {

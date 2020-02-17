@@ -40,29 +40,28 @@ pub mod android {
 
     #[no_mangle]
     pub unsafe extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_getMinimumCompatiblePreviewSize(env: &mut JNIEnv, _: jclass, engine_ptr:jlong) -> jobject {
-
-        let app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
+        let app = Box::from_raw(engine_ptr as *mut CameraAppEngine);
         let args: [jvalue; 2] = [
             util::jint_val(app.get_compatible_camera_res().width),
             util::jint_val(app.get_compatible_camera_res().height)
         ];
 
-       let cls = util::jni::find_class(env, "android/util/Size");
-       let method_id = util::jni::get_method_id(env, cls, "<init>", "(II)V");
-       util::jni::new_object(env, cls, method_id, &args)
+        let cls = util::jni::find_class(env, "android/util/Size");
+        let method_id = util::jni::get_method_id(env, cls, "<init>", "(II)V");
+        util::jni::new_object(env, cls, method_id, &args)
     }
 
     #[no_mangle]
-    pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_onPreviewSurfaceCreated(_: &mut JNIEnv, _: jclass, engine_ptr:jlong, surface:jobject) {
-       let mut app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
-       app.create_camera_session(surface);
-       app.start_preview(true);
+    pub unsafe extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_onPreviewSurfaceCreated(_: &mut JNIEnv, _: jclass, engine_ptr:jlong, surface:jobject) {
+        let mut app = Box::from_raw(engine_ptr as *mut CameraAppEngine);
+        app.create_camera_session(surface);
+        app.start_preview(true);
     }
 
     #[no_mangle]
-    pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_onPreviewSurfaceDestroyed(_: &mut JNIEnv, _: jclass, engine_ptr:jlong, _:jobject) {
-//        let mut app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
-//        app.start_preview(false);
+    pub unsafe extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_onPreviewSurfaceDestroyed(_: &mut JNIEnv, _: jclass, engine_ptr:jlong, _:jobject) {
+        let mut app = Box::from_raw(engine_ptr as *mut CameraAppEngine);
+        app.start_preview(false);
 
         // TODO port cpp code if necessary
         // jclass cls = env->FindClass("android/view/Surface");
@@ -82,6 +81,4 @@ pub mod android {
         // env->ReleaseStringUTFChars(destroyObjStr, destroyObjName);
         // env->ReleaseStringUTFChars(appObjStr, appObjName);
     }
-
-
 }
