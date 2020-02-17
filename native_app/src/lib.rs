@@ -8,7 +8,7 @@ pub mod android {
     extern crate ffi;
 
     use super::*;
-    use self::ffi::{JNIEnv, jclass, jobject, jstring, jlong};
+    use self::ffi::{JNIEnv, jchar, jclass, jobject, jstring, jlong};
 
 
     #[derive(Debug)]
@@ -47,8 +47,9 @@ pub mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_io_waweb_cartoonifyit_MainActivity_createNativeApp(env: JNIEnv, _: jclass, java_pattern: jstring) -> jlong {
-        rust_engine_create(env.as_ref().unwrap().GetStringChars(java_pattern, true) ) as jlong
+    pub unsafe extern fn Java_io_waweb_cartoonifyit_MainActivity_createNativeApp(env: &mut JNIEnv, _: jclass, java_pattern: jstring) -> jlong {
+        let get_string_chars = env.as_ref().unwrap().GetStringChars.unwrap();
+        rust_engine_create(get_string_chars(env, java_pattern, true) ) as jlong
     }
 
     #[no_mangle]
