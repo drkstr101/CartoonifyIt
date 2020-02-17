@@ -5,12 +5,10 @@ use std::os::raw::{c_char};
 #[cfg(target_os="android")]
 #[allow(non_snake_case)]
 pub mod android {
-    extern crate jni;
+    extern crate ffi;
 
     use super::*;
-    use self::jni::JNIEnv;
-    use self::jni::objects::{JClass, JString};
-    use self::jni::sys::{jstring, jlong};
+    use self::ffi::{JNIEnv, jclass, jobject, jstring, jlong};
 
 
     #[derive(Debug)]
@@ -43,21 +41,18 @@ pub mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_io_waweb_cartoonifyit_MainActivity_greeting(env: JNIEnv, _: JClass, app_ptr: jlong) -> jstring {
+    pub unsafe extern fn Java_io_waweb_cartoonifyit_MainActivity_greeting(env: JNIEnv, _: jclass, app_ptr: jlong) -> jstring {
         let app = app_ptr as *mut AppEngine;
-        let greeting_ptr = CString::from_raw(rust_greeting(app));
-        let output = env.new_string(greeting_ptr.to_str().unwrap()).expect("Couldn't create java string!");
-
-        output.into_inner()
+        rust_greeting(app) as jstring
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_io_waweb_cartoonifyit_MainActivity_createNativeApp(env: JNIEnv, _: JClass, java_pattern: JString) -> jlong {
-        rust_engine_create(env.get_string(java_pattern).expect("invalid string").as_ptr()) as jlong
+    pub unsafe extern fn Java_io_waweb_cartoonifyit_MainActivity_createNativeApp(env: JNIEnv, _: jclass, java_pattern: jstring) -> jlong {
+        rust_engine_create(env.as_ref().unwrap().GetStringChars(java_pattern, true) ) as jlong
     }
 
     #[no_mangle]
-    pub unsafe extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_destroyNativeApp(_: JNIEnv, _: JClass, app_ptr: jlong) {
+    pub unsafe extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_destroyNativeApp(_: JNIEnv, _: jclass, app_ptr: jlong) {
         let app = app_ptr as *mut AppEngine;
         rust_engine_destroy(app)
     }
