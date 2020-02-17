@@ -124,15 +124,10 @@ checksum = "53445de381a1f436797497c61d851644d0e8e88e6140f22872ad33a704933978"
 
 [[package]]
 name = "native_app"
-version = "0.1.2"
+version = "0.1.0"
 dependencies = [
  "jni",
- "native_app_sys",
 ]
-
-[[package]]
-name = "native_app_sys"
-version = "0.1.2"
 
 [[package]]
 name = "rustc-demangle"

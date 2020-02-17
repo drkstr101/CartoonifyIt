@@ -1,79 +1,64 @@
-extern crate jni;
-extern crate ffi;
+use std::ffi::{CString, CStr};
+use std::os::raw::{c_char};
 
-mod camera_engine;
-mod camera_manager;
+/// Expose the JNI interface for android below
+#[cfg(target_os="android")]
+#[allow(non_snake_case)]
+pub mod android {
+    extern crate jni;
 
-use jni::JNIEnv;
-use jni::objects::{JClass, JValue, JObject};
-use jni::sys::{jint, jlong, jobject};
+    use super::*;
+    use self::jni::JNIEnv;
+    use self::jni::objects::{JClass, JString};
+    use self::jni::sys::{jstring, jlong};
 
-use camera_engine::CameraAppEngine;
 
-fn app_engine_create(env: &JNIEnv, width: i32, height: i32) -> *mut CameraAppEngine {
-    let engine = CameraAppEngine::new(env.get_native_interface(), width, height);
-    Box::into_raw(Box::new(engine))
+    #[derive(Debug)]
+    struct AppEngine {
+        greeting: *mut c_char
+    }
+
+    unsafe fn rust_greeting(app: *mut AppEngine) -> *mut c_char {
+        let app = Box::from_raw(app);
+        app.greeting
+    }
+
+    /// Constructs an AppEngine object.
+    fn rust_engine_create(to: *const c_char) -> *mut AppEngine {
+        let c_str = unsafe { CStr::from_ptr(to) };
+        let recipient = match c_str.to_str() {
+            Err(_) => "there",
+            Ok(string) => string,
+        };
+
+        let greeting = CString::new("Hello ".to_owned() + recipient).unwrap().into_raw();
+
+        let app = AppEngine{greeting: greeting};
+        Box::into_raw(Box::new(app))
+    }
+
+    /// Destroys an AppEngine object previously constructed using `rust_engine_create()`.
+    unsafe fn rust_engine_destroy(app: *mut AppEngine) {
+        drop(Box::from_raw(app))
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_io_waweb_cartoonifyit_MainActivity_greeting(env: JNIEnv, _: JClass, app_ptr: jlong) -> jstring {
+        let app = app_ptr as *mut AppEngine;
+        let greeting_ptr = CString::from_raw(rust_greeting(app));
+        let output = env.new_string(greeting_ptr.to_str().unwrap()).expect("Couldn't create java string!");
+
+        output.into_inner()
+    }
+
+    #[no_mangle]
+    pub unsafe extern fn Java_io_waweb_cartoonifyit_MainActivity_createNativeApp(env: JNIEnv, _: JClass, java_pattern: JString) -> jlong {
+        rust_engine_create(env.get_string(java_pattern).expect("invalid string").as_ptr()) as jlong
+    }
+
+    #[no_mangle]
+    pub unsafe extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_destroyNativeApp(_: JNIEnv, _: JClass, app_ptr: jlong) {
+        let app = app_ptr as *mut AppEngine;
+        rust_engine_destroy(app)
+    }
 }
-
-/// Destroys an AppEngine object previously constructed using `rust_engine_create()`.
-fn app_engine_destroy(engine: *mut CameraAppEngine) {
-    unsafe { drop(Box::from_raw(engine)) }
-}
-
-
-#[no_mangle]
-pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_createCamera(env: JNIEnv<'static>, _: JClass, width:jint, height:jint) -> jlong {
-    app_engine_create(&env, width, height) as jlong
-}
-
-#[no_mangle]
-pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_deleteCamera(_: JNIEnv, _: JClass, engine_ptr:jlong) {
-    app_engine_destroy(engine_ptr as *mut CameraAppEngine);
-}
-
-#[no_mangle]
-pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_getMinimumCompatiblePreviewSize(env: JNIEnv, _: JClass, engine_ptr:jlong) -> jobject {
-
-    let app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
-    let args: [JValue; 2] = [
-        JValue::from(app.get_compatible_camera_res().width), 
-        JValue::from(app.get_compatible_camera_res().height)
-    ];
-        
-    let cls = env.find_class("android/util/Size").unwrap();
-    env.new_object(cls, "(II)V", &args)
-        .unwrap()
-        .into_inner()
-}
-
-#[no_mangle]
-pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_onPreviewSurfaceCreated(_: JNIEnv, _: JClass, engine_ptr:jlong, surface:jobject) {
-    let mut app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
-    app.create_camera_session(surface);
-}
-
-#[no_mangle]
-pub extern "C" fn Java_io_waweb_cartoonifyit_MainActivity_onPreviewSurfaceDestroyed(_: JNIEnv, _: JClass, engine_ptr:jlong, _:jobject) {
-    let mut app = unsafe { Box::from_raw(engine_ptr as *mut CameraAppEngine) };
-    app.start_preview(false);
-
-    // TODO port cpp code if necessary 
-    // jclass cls = env->FindClass("android/view/Surface");
-    // jmethodID toString =
-    //     env->GetMethodID(cls, "toString", "()Ljava/lang/String;");
-  
-    // jstring destroyObjStr =
-    //     reinterpret_cast<jstring>(env->CallObjectMethod(surface, toString));
-    // const char *destroyObjName = env->GetStringUTFChars(destroyObjStr, nullptr);
-  
-    // jstring appObjStr = reinterpret_cast<jstring>(
-    //     env->CallObjectMethod(pApp->GetSurfaceObject(), toString));
-    // const char *appObjName = env->GetStringUTFChars(appObjStr, nullptr);
-  
-    // ASSERT(!strcmp(destroyObjName, appObjName), "object Name MisMatch");
-  
-    // env->ReleaseStringUTFChars(destroyObjStr, destroyObjName);
-    // env->ReleaseStringUTFChars(appObjStr, appObjName);
-}
-
-
