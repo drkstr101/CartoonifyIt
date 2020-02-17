@@ -6,5 +6,9 @@ authors = ["Aaron R Miller <aaron.miller@waweb.io>"]
 [dependencies]
 jni = "0.13.1"
 
+[dependencies.ffi]
+package = "native_app_sys"
+path = "../native_app_sys"
+
 [lib]
-crate_type = ["staticlib", "dylib"]
+crate_type = ["staticlib", "cdylib"]

@@ -1,4 +1,5 @@
 [workspace]
 members = [
-    "native_app"
+    "native_app",
+    "native_app_sys"
 ]
