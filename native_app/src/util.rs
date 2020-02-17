@@ -1,7 +1,7 @@
 use std::os::raw::c_char;
 use std::ffi::CString;
 
-use ffi::{JNIEnv, jclass, jint, jmethodID, jobject, jvalue, JNI_TRUE};
+use ffi::{JNIEnv, jclass, jint, jmethodID, jobject, jvalue};
 
 pub fn str_into_raw(x: &'static str) -> *const c_char {
     CString::new(x)
