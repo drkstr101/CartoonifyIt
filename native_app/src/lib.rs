@@ -8,7 +8,7 @@ pub mod android {
     extern crate ffi;
 
     use super::*;
-    use self::ffi::{JNIEnv, jchar, jclass, jobject, jstring, jlong};
+    use self::ffi::{JNIEnv, jclass, jstring, jlong};
 
 
     #[derive(Debug)]
@@ -41,7 +41,7 @@ pub mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_io_waweb_cartoonifyit_MainActivity_greeting(env: JNIEnv, _: jclass, app_ptr: jlong) -> jstring {
+    pub unsafe extern fn Java_io_waweb_cartoonifyit_MainActivity_greeting(_: JNIEnv, _: jclass, app_ptr: jlong) -> jstring {
         let app = app_ptr as *mut AppEngine;
         rust_greeting(app) as jstring
     }
@@ -49,7 +49,8 @@ pub mod android {
     #[no_mangle]
     pub unsafe extern fn Java_io_waweb_cartoonifyit_MainActivity_createNativeApp(env: &mut JNIEnv, _: jclass, java_pattern: jstring) -> jlong {
         let get_string_chars = env.as_ref().unwrap().GetStringChars.unwrap();
-        rust_engine_create(get_string_chars(env, java_pattern, true) ) as jlong
+        let is_copy = 0 as *mut u8;
+        rust_engine_create(get_string_chars(env, java_pattern, is_copy) as *const c_char ) as jlong
     }
 
     #[no_mangle]
