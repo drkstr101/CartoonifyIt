@@ -41,9 +41,10 @@ pub mod android {
     }
 
     #[no_mangle]
-    pub unsafe extern fn Java_io_waweb_cartoonifyit_MainActivity_greeting(_: JNIEnv, _: jclass, app_ptr: jlong) -> jstring {
+    pub unsafe extern fn Java_io_waweb_cartoonifyit_MainActivity_greeting(env: &mut JNIEnv, _: jclass, app_ptr: jlong) -> jstring {
         let app = app_ptr as *mut AppEngine;
-        rust_greeting(app) as jstring
+        let new_string = env.as_ref().unwrap().NewStringUTF.unwrap();
+        new_string(env, rust_greeting(app))
     }
 
     #[no_mangle]
