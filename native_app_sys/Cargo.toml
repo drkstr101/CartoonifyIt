@@ -6,6 +6,3 @@ authors = ["Aaron R Miller <aaron.miller@waweb.io>"]
 license = "MIT"
 keywords = ["android", "ndk", "camera", "ffi"]
 readme = "../README.md"
-
-[lib]
-crate_type = ["staticlib", "cdylib"]
