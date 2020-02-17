@@ -5,13 +5,16 @@ authors = ["Aaron R Miller <aaron.miller@waweb.io>"]
 license = "MIT"
 keywords = ["android", "ndk", "camera"]
 readme = "../README.md"
-links = "android_native_app_glue"
+links = "native_app_glue"
 build = "build.rs"
 
+[build-dependencies]
+cc = "1.0"
+
 [dependencies]
-jni = "0.5.2"
+jni = "0.13.1"
 android-ndk = "0.0.6"
 android-ndk-sys = "0.2.0"
 
 [lib]
-crate_type = ["staticlib", "dylib"]
+crate_type = ["staticlib", "cdylib"]

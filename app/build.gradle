@@ -8,7 +8,7 @@ android {
     ndkVersion "20.1.5948944"
     defaultConfig {
         applicationId "io.waweb.cartoonifyit"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName project.version
@@ -29,7 +29,6 @@ cargo {
     prebuiltToolchains = true
     targetDirectory = '../target'
     apiLevel = 28
-    verbose = true
 }
 
 repositories {
