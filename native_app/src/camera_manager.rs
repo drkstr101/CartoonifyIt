@@ -5,6 +5,8 @@ use ffi::{
     acamera_metadata_enum_acamera_lens_facing_ACAMERA_LENS_FACING_FRONT as ACAMERA_LENS_FACING_FRONT,
     ACameraDevice,
     ACameraDevice_request_template,
+    ACameraManager,
+    ACameraManager_create,
     ACameraOutputTarget,
     ACaptureRequest,
     ACaptureSessionOutput,
@@ -78,7 +80,8 @@ impl CameraId {
 
 pub struct NDKCamera {
     _requests: Vec<CaptureRequestInfo>,
-    _cameras: HashMap<String, CameraId>
+    _cameras: HashMap<String, CameraId>,
+    _camera_mgr: Box<*mut ACameraManager>
 }
 
 impl NDKCamera {
@@ -87,9 +90,12 @@ impl NDKCamera {
             Vec::with_capacity(PreviewIndices::CaptureRequestCount as usize);
 
         let _cameras = HashMap::new();
+
+        let _camera_mgr = unsafe{ Box::new(ACameraManager_create()) };
         NDKCamera { 
             _requests,
-            _cameras
+            _cameras,
+            _camera_mgr
         } 
     }
     // pub fn enumerate_camera(&self) {}
