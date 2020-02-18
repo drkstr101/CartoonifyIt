@@ -1,6 +1,9 @@
 use std::collections::HashMap;
 
 use ffi::{
+    acamera_metadata_enum_android_lens_facing_t,
+    acamera_metadata_enum_acamera_lens_facing_ACAMERA_LENS_FACING_FRONT as ACAMERA_LENS_FACING_FRONT,
+    ACameraDevice,
     ACameraDevice_request_template,
     ACameraOutputTarget,
     ACaptureRequest,
@@ -53,7 +56,25 @@ struct CaptureRequestInfo {
     pub session_sequence_id: i32
 }
 
-struct CameraId {}
+struct CameraId {
+    device: *mut ACameraDevice,
+    id: String,
+    facing: acamera_metadata_enum_android_lens_facing_t,
+    available: bool,
+    owner: bool
+}
+
+impl CameraId {
+    pub fn new(id: String) -> Self {
+        CameraId {
+            id,
+            device: (0 as *mut ACameraDevice),
+            facing: ACAMERA_LENS_FACING_FRONT,
+            available: false,
+            owner: false
+        }
+    }
+}
 
 pub struct NDKCamera {
     _requests: Vec<CaptureRequestInfo>,
