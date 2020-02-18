@@ -1,6 +1,22 @@
-use ffi::{ANativeWindow};
+use std::collections::HashMap;
 
-use ffi::{AIMAGE_FORMATS, AIMAGE_FORMATS_AIMAGE_FORMAT_YUV_420_888};
+use ffi::{
+    ACameraDevice_request_template,
+    ACameraOutputTarget,
+    ACaptureRequest,
+    ACaptureSessionOutput,
+    ANativeWindow,
+    AIMAGE_FORMATS, 
+    AIMAGE_FORMATS_AIMAGE_FORMAT_YUV_420_888
+};
+
+#[allow(dead_code)]
+pub enum CaptureSessionState {
+    Ready,      // session is ready
+    Active,     // session is busy
+    Closed,     // session is closed(by itself or a new session evicts)
+    MaxState
+}
 
 /// A Data Structure to communicate resolution between camera and ImageReader
 pub struct ImageFormat {
@@ -18,17 +34,43 @@ impl ImageFormat {
     }
 }
 
-// pub enum CaptureSessionState {
-//     Ready,      // session is ready
-//     Active,     // session is busy
-//     Closed,     // session is closed(by itself or a new session evicts)
-//     MaxState
-//   }
+enum PreviewIndices {
+    #[allow(dead_code)]
+    PreviewRequestIdx = 0,
 
-pub struct NDKCamera {}
+    #[allow(dead_code)]
+    JpgCaptureRequestIdx = 1,
+
+    CaptureRequestCount = 2,
+}
+
+struct CaptureRequestInfo {
+    pub output_native_window: *mut ANativeWindow,
+    pub session_output: *mut ACaptureSessionOutput,
+    pub target: *mut ACameraOutputTarget,
+    pub request: *mut ACaptureRequest,
+    pub template: ACameraDevice_request_template,
+    pub session_sequence_id: i32
+}
+
+struct CameraId {}
+
+pub struct NDKCamera {
+    _requests: Vec<CaptureRequestInfo>,
+    _cameras: HashMap<String, CameraId>
+}
 
 impl NDKCamera {
-    pub fn new() -> NDKCamera { NDKCamera{} }
+    pub fn new() -> NDKCamera {
+        let _requests: Vec<CaptureRequestInfo> = 
+            Vec::with_capacity(PreviewIndices::CaptureRequestCount as usize);
+
+        let _cameras = HashMap::new();
+        NDKCamera { 
+            _requests,
+            _cameras
+        } 
+    }
     // pub fn enumerate_camera(&self) {}
     pub fn match_capture_size_request(&self, _: i32, _: i32, _: &ImageFormat) -> bool { true }
     pub fn create_session(&self, _: *mut ANativeWindow) -> bool { true }
