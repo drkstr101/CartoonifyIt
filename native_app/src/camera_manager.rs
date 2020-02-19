@@ -1,4 +1,6 @@
 use std::collections::HashMap;
+use std::ffi::CString;
+use std::os::raw::c_void;
 
 use ffi::{
     acamera_metadata_enum_android_lens_facing_t,
@@ -7,6 +9,10 @@ use ffi::{
     ACameraDevice_request_template,
     ACameraManager,
     ACameraManager_create,
+    ACameraManager_openCamera,
+    ACameraDevice_ErrorStateCallback,
+    ACameraDevice_StateCallback,
+    ACameraDevice_StateCallbacks,
     ACameraOutputTarget,
     ACaptureRequest,
     ACaptureSessionOutput,
@@ -83,6 +89,20 @@ pub struct NDKCamera {
     _active_camera_id: String
 }
 
+#[no_mangle]
+extern "C" fn on_device_state_changes(ctx: *mut c_void, dev: *mut ACameraDevice) {
+    // TODO...
+    // let camera = Box::from_raw(ctx);
+    // camera.on_device_state(dev);
+}
+
+#[no_mangle]
+extern "C" fn on_device_error_changes(ctx: *mut c_void, dev: *mut ACameraDevice, err: i32) {
+    // TODO...
+    // let camera = Box::from_raw(ctx);
+    // camera.on_device_error(dev, err);
+}
+
 impl NDKCamera {
     pub fn new() -> NDKCamera {
         let _requests: Vec<CaptureRequestInfo> = 
@@ -106,9 +126,23 @@ impl NDKCamera {
         camera.enumerate_camera();
         assert!(camera._active_camera_id.len() > 0, "Unknown ActiveCameraIdx");
 
-        // // Create back facing camera device
-        // CALL_MGR(openCamera(cameraMgr_, activeCameraId_.c_str(), GetDeviceListener(),
-        //                     &cameras_[activeCameraId_].device_));
+        // Create back facing camera device
+        // TODO...
+        // let c_str = CString::new(camera._active_camera_id)
+        //     .expect("Failed to create CString from _active_camera_id");
+        let c_str = CString::new("")
+            .expect("Failed to create CString from _active_camera_id");
+        unsafe { 
+            ACameraManager_openCamera(
+                camera._camera_mgr, 
+                c_str.as_ptr(),
+                camera.get_device_listener(),
+
+                // TODO...
+                0 as *mut *mut ACameraDevice
+                // &camera._cameras.get(camera._active_camera_id).unwrap().device
+            );
+        }
 
         // CALL_MGR(registerAvailabilityCallback(cameraMgr_, GetManagerListener()));
 
@@ -154,6 +188,7 @@ impl NDKCamera {
 
         camera
     }
+
     pub fn enumerate_camera(&mut self) {
         // TODO...
 
@@ -201,9 +236,49 @@ impl NDKCamera {
     }
 
     // pub fn get_sensor_orientation(&self, facing: i32, angle: i32) -> bool { true }
+    
     // pub fn on_camera_status_changed(&self, id: (/* `const char*` */), available: bool) { }
-    // pub fn on_device_state(&self, dev: &ACameraDevice) { }
-    // pub fn on_device_error(&self, dev: &ACameraDevice, err: i32) { }
+
+    /// Handle Camera DeviceStateChanges msg, notify device is disconnected
+    /// simply close the camera
+    pub fn on_device_state(&self, dev: *mut ACameraDevice) { 
+        //TODO ...
+        // std::string id(ACameraDevice_getId(dev));
+        // LOGW("device %s is disconnected", id.c_str());
+      
+        // cameras_[id].available_ = false;
+        // ACameraDevice_close(cameras_[id].device_);
+        // cameras_.erase(id);
+    }
+    
+    /// Handles Camera's deviceErrorChanges message, no action;
+    /// mainly debugging purpose
+    pub fn on_device_error(&self, dev: *mut ACameraDevice, err: i32) { 
+        // TODO...
+        // std::string id(ACameraDevice_getId(dev));
+
+        // LOGI("CameraDevice %s is in error %#x", id.c_str(), err);
+        // PrintCameraDeviceError(err);
+      
+        // CameraId& cam = cameras_[id];
+      
+        // switch (err) {
+        //   case ERROR_CAMERA_IN_USE:
+        //     cam.available_ = false;
+        //     cam.owner_ = false;
+        //     break;
+        //   case ERROR_CAMERA_SERVICE:
+        //   case ERROR_CAMERA_DEVICE:
+        //   case ERROR_CAMERA_DISABLED:
+        //   case ERROR_MAX_CAMERAS_IN_USE:
+        //     cam.available_ = false;
+        //     cam.owner_ = false;
+        //     break;
+        //   default:
+        //     LOGI("Unknown Camera Device Error: %#x", err);
+        // }
+    }
+    
     // pub fn on_session_state(&self, ses: &ACameraCaptureSession, state: CaptureSessionState) { }
     // pub fn on_capture_sequence_end(&self, session: ACameraCaptureSession, sequence_id: i32, frame_num: i64) { }
     // pub fn on_capture_failed(&self, session: &ACameraCaptureSession, request: &ACaptureRequest, failure: &ACameraCaptureFailure) { }
@@ -214,4 +289,25 @@ impl NDKCamera {
     // pub fn get_sensitivity_range(&self, min: &i64, max: &i64, cur_val: &i64) -> bool { true }
 
     // pub fn update_camera_request_parameter(&self, code: i32, val: i64) { }
+
+    fn get_device_listener(&self) -> *mut ACameraDevice_StateCallbacks {
+        let on_disconnected: ACameraDevice_StateCallback
+            = Some(on_device_state_changes);
+
+        let on_error: ACameraDevice_ErrorStateCallback
+            = Some(on_device_error_changes);
+
+        let callbacks = ACameraDevice_StateCallbacks {
+            // TODO...
+            // see: https://stackoverflow.com/questions/33929079/rust-ffi-passing-trait-object-as-context-to-call-callbacks-on
+            context: (0 as *mut c_void),
+            onDisconnected: on_disconnected,
+            onError: on_error
+        };
+
+        let static_ref: &'static mut ACameraDevice_StateCallbacks 
+            = Box::leak(Box::new(callbacks));
+
+        static_ref
+    }
 }
