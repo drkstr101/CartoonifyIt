@@ -27,3 +27,15 @@ include!("ffi_i686.rs");
 
 #[cfg(all(any(target_os = "android", test), target_arch = "x86_64"))]
 include!("ffi_x86_64.rs");
+
+pub trait CameraMetadata {
+    fn new() -> Self;
+}
+
+/// ACameraMetadata has a private unused field, so we must
+/// export a public constructor here
+impl CameraMetadata for ACameraMetadata {
+    fn new() -> Self {
+        ACameraMetadata { _unused: [] }
+    }
+}
